@@ -27,12 +27,14 @@ const Start = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 loginPage">
-      <div className="p-3 rounded w-75 w-md-25 border loginForm">
+      <div className="p-3 rounded w-md-50 border loginForm text-center">
+        
+        {/* Estilos relevantes aquí */}
         <h2 className="text-center">Iniciar sesión como:</h2>
-        <div className="d-flex justify-content-center mt-5 mb-2 gap-4">
+        <div className="d-flex flex-column justify-content-center mt-4 mb-4">
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary mb-2"
             onClick={() => {
               navigate("/employee_login");
             }}

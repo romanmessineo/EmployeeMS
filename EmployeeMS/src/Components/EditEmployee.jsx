@@ -2,70 +2,93 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-
-
 const EditEmployee = () => {
-    const {id} = useParams()
-    const [employee, setEmployee] = useState({
-      name: "",
-      last_name: "",
-      cuil: "",
-      email: "",
-      password: "",
+  const { id } = useParams();
+  const [employee, setEmployee] = useState({
+    name: "",
+    last_name: "",
+    cuil: "",
+    email: "",
+    password: "",
 
-      salary: "",
-      address: "",
-      category_id: "",
-    });
-      const [category, setCategory] = useState([])
-      const navigate = useNavigate()
+    salary: "",
+    address: "",
+    category_id: "",
+  });
 
-      useEffect(()=> {
-        axios.get('http://localhost:3000/auth/category')
-        .then(result => {
-            if(result.data.Status) {
-                setCategory(result.data.Result);
-            } else {
-                alert(result.data.Error)
-            }
-        }).catch(err => console.log(err))
-
-        axios.get('http://localhost:3000/auth/employee/'+id)
-        .then(result => {
-            setEmployee({
-              ...employee,
-              name: result.data.Result[0].name,
-              last_name: result.data.Result[0].last_name,
-              cuil: result.data.Result[0].cuil,
-              email: result.data.Result[0].email,
-              password: result.data.Result[0].password,
-
-              address: result.data.Result[0].address,
-              salary: result.data.Result[0].salary,
-              category_id: result.data.Result[0].category_id,
-            });
-        }).catch(err => console.log(err))
-    }, [])
   
+
+  const [category, setCategory] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/auth/category")
+      .then((result) => {
+        if (result.data.Status) {
+          setCategory(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get("http://localhost:3000/auth/employee/" + id)
+      .then((result) => {
+        const employeeData = result.data.Result[0];
+
+        setEmployee({
+          name: employeeData.name,
+          last_name: employeeData.last_name,
+          cuil: employeeData.cuil,
+          email: employeeData.email,
+          password: employeeData.password,
+          address: employeeData.address,
+          salary: employeeData.salary,
+          category_id: employeeData.category_id,
+          image: employeeData.image, // Incluir la propiedad image
+        });
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+
   const handleSubmit = (e) => {
-        e.preventDefault()
-        axios.put('http://localhost:3000/auth/edit_employee/'+id, employee)
-        .then(result => {
-            if(result.data.Status) {
-                navigate('/dashboard/employee')
-            } else {
-                alert(result.data.Error)
-            }
-        }).catch(err => console.log(err))
-    }
+    e.preventDefault();
+    axios
+      .put("http://localhost:3000/auth/edit_employee/" + id, employee)
+      .then((result) => {
+        if (result.data.Status) {
+          navigate("/dashboard/employee");
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
-      <div className="p-3 rounded w-50 border">
-        <h3 className="text-center">Editar Empleado</h3>
-        <form className="row g-1" onSubmit={handleSubmit}>
-          <div className="col-12">
-            <label htmlFor="imputName" className="form-label">
+      <div className="p-3 rounded w-100 border shadow formEditEmployee">
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <div className="flex-grow-1">
+            <h3>Editar Empleado</h3>
+            {/* Contenido que no debe alinearse a la derecha */}
+          </div>
+          {employee.image && (
+            <img
+              src={`http://localhost:3000/Images/` + employee.image}
+              alt="Employee Image"
+              className="img-thumbnail rounded-circle"
+              style={{ width: "100px", height: "100px" }}
+            />
+          )}
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="inputName" className="form-label">
               Nombre
             </label>
             <input
@@ -80,14 +103,14 @@ const EditEmployee = () => {
             />
           </div>
 
-          <div className="col-12">
-            <label htmlFor="imputLastName" className="form-label">
+          <div className="mb-3">
+            <label htmlFor="inputLastName" className="form-label">
               Apellido
             </label>
             <input
               type="text"
               className="form-control rounded-0"
-              id="imputLastName"
+              id="inputLastName"
               placeholder="Ingresa Apellido"
               value={employee.last_name}
               onChange={(e) =>
@@ -96,14 +119,14 @@ const EditEmployee = () => {
             />
           </div>
 
-          <div className="col-12">
-            <label htmlFor="imputCuil" className="form-label">
+          <div className="mb-3">
+            <label htmlFor="inputCuil" className="form-label">
               CUIL
             </label>
             <input
               type="text"
               className="form-control rounded-0"
-              id="imputCuil"
+              id="inputCuil"
               placeholder="Ingresa CUIL"
               value={employee.cuil}
               onChange={(e) =>
@@ -112,8 +135,8 @@ const EditEmployee = () => {
             />
           </div>
 
-          <div className="col-12">
-            <label htmlFor="imputEmail" className="form-label">
+          <div className="mb-3">
+            <label htmlFor="inputEmail" className="form-label">
               Email
             </label>
             <input
@@ -129,24 +152,24 @@ const EditEmployee = () => {
             />
           </div>
 
-          <div className="col-12">
-            <label htmlFor="imputPassword" className="form-label">
+          <div className="mb-3">
+            <label htmlFor="inputPassword" className="form-label">
               Password
             </label>
             <input
               type="password"
               className="form-control rounded-0"
-              id="imputPassword"
+              id="inputPassword"
               placeholder="Ingresa Password"
-              //value={employee.password}
+              /* value={employee.password} */
               onChange={(e) =>
                 setEmployee({ ...employee, password: e.target.value })
               }
             />
           </div>
 
-          <div className="col-12">
-            <label htmlFor="imputSalary" className="form-label">
+          <div className="mb-3">
+            <label htmlFor="inputSalary" className="form-label">
               Salario
             </label>
             <input
@@ -162,8 +185,8 @@ const EditEmployee = () => {
             />
           </div>
 
-          <div className="col-12">
-            <label htmlFor="imputAddress" className="form-label">
+          <div className="mb-3">
+            <label htmlFor="inputAddress" className="form-label">
               Dirección
             </label>
             <input
@@ -179,38 +202,36 @@ const EditEmployee = () => {
             />
           </div>
 
-          <div className="col-12">
+          <div className="mb-3">
             <label htmlFor="category" className="form-label">
-              Categoria
+              Categoría
             </label>
-
             <select
               name="category"
               id="category"
               className="form-select"
+              value={employee.category_id}
               onChange={(e) =>
                 setEmployee({ ...employee, category_id: e.target.value })
               }
             >
-              {category.map((c) => {
-                return (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                );
-              })}
+              {category.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
             </select>
           </div>
 
-          <div className="col-12">
+          <div className="mb-3">
             <button type="submit" className="btn btn-primary w-100">
-              Editar
+              EDITAR
             </button>
           </div>
         </form>
       </div>
     </div>
   );
-}
+};
 
-export default EditEmployee
+export default EditEmployee;

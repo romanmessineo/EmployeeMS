@@ -4,7 +4,7 @@ import axios from "axios";
 
 const Employee = () => {
   const [employee, setEmployee] = useState([]);
-  
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     axios
@@ -61,81 +61,98 @@ const Employee = () => {
     fileInput.click();
   };
 
+  const filteredEmployees = employee.filter((e) => {
+    const fullName = `${e.name} ${e.last_name} ${e.category_name}`;
+    return fullName.toLowerCase().includes(search.toLowerCase());
+  });
+
   return (
-    <div className="container px-5 mt-3 shadow ">
-      <div className="col">
-        <div className="row justify-content-center text-center">
-          <h3>Lista de Empleados</h3>
+    <div className="container px-3 px-md-5 mt-3 shadow">
+      <div className="col vh-100">
+        <div className="d-flex justify-content-between align-items-center">
+          <h3>Lista de Personal</h3>
+          <Link to="/dashboard/add_employee" className="btn btn-success">
+            Añadir Personal
+          </Link>
         </div>
-        <hr />
-        <Link to="/dashboard/add_employee" className="row-1 btn btn-success">
-          Añadir Empleado
-        </Link>
-        <div className="row d-flex mt-3 ">
-          <div className="col-12">
 
-          <table className="table table-striped table-bordered table-hover table-sm table-dark">
-            <thead className="text-center table-light">
-              <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Imagen</th>
-                <th>Cuil</th>
-                <th>Email</th>
-                <th>Dirección</th>
-                <th>Categoria</th>
-                <th>Salario</th>
-                <th>Cargar Recibo</th>
-                <th>Accíon</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employee.map((e) => (
-                <tr key={e.id} className="text-center">
-                  <td>{e.name}</td>
-                  <td>{e.last_name}</td>
-                  <td>
-                    <img
-                      src={`http://localhost:3000/Images/` + e.image}
-                      alt=""
-                      className="employee_image img-fluid"
-                      loading="lazy"
-                    />
-                  </td>
-                  <td>{e.cuil}</td>
-                  <td>{e.email}</td>
-                  <td>{e.address}</td>
-                  <td>{e.category_name}</td>
-                  <td>${e.salary}</td>
-                  <td>
-                    <button
-                      className="btn btn-success btn-sm me-2"
-                      onClick={() => handleUploadReceipt(e.id)}
-                    >
-                      Cargar
-                    </button>
-                  </td>
-                  <td className="text-center text-md-left">
-                    <div className="d-md-flex justify-content-center gap-1">
-                      <Link
-                        to={`/dashboard/edit_employee/` + e.id}
-                        className="btn btn-info btn-sm"
-                      >
-                        Editar
-                      </Link>
-                      <button
-                        className="btn btn-warning btn-sm"
-                        onClick={() => handleDelete(e.id)}
-                      >
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
+        <div className="row mt-3">
+          <div className="col">
+            <div className="mb-3">
+              <input
+                type="text"
+                placeholder="Buscar por nombre"
+                className="form-control shadow"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            <div
+              className="table-responsive emplTable"
+              style={{ overflowY: "auto", maxHeight: "80vh" }}
+            >
+              <table className="table table-striped table-bordered table-hover table-sm table-primary shadow">
+                <thead className="text-center table-light sticky-thead">
+                  <tr className="align-middle">
+                    <th>Nombre</th>
+                    <th>Imagen</th>
+                    <th>Cuil</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                    <th>Categoria</th>
+                    <th>Salario</th>
+                    <th>Subir Rec</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredEmployees.map((e) => (
+                    <tr key={e.id} className="text-center">
+                      <td className="align-middle">
+                        {e.name} {e.last_name}
+                      </td>
+                      <td className="align-middle">
+                        <img
+                          src={`http://localhost:3000/Images/` + e.image}
+                          alt={e.name}
+                          className="employee_image img-fluid"
+                          loading="lazy"
+                        />
+                      </td>
+                      <td className="align-middle">{e.cuil}</td>
+                      <td className="align-middle">{e.email}</td>
+                      <td className="align-middle">{e.address}</td>
+                      <td className="align-middle">{e.category_name}</td>
+                      <td className="align-middle">${e.salary}</td>
+                      <td className="align-middle">
+                        <button
+                          className="btn btn-success btn-sm me-2 shadow"
+                          onClick={() => handleUploadReceipt(e.id)}
+                        >
+                          <i className="fs-4 bi bi-cloud-arrow-up"></i>
+                        </button>
+                      </td>
+                      <td className="align-middle text-md-left">
+                        <div className="d-md-flex justify-content-center gap-1">
+                          <Link
+                            to={`/dashboard/edit_employee/` + e.id}
+                            className="btn btn-info btn-sm shadow"
+                          >
+                            <i className="fs-4 bi bi-pencil"></i>
+                          </Link>
+                          <button
+                            className="btn btn-danger btn-sm shadow"
+                            onClick={() => handleDelete(e.id)}
+                          >
+                            <i className="fs-4 bi bi-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

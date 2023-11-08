@@ -1,6 +1,6 @@
 .loginPage {
-    background: url('Images/employeems.jpeg');
-    background: linear-gradient(rgba(11, 11, 11, 0.5), rgba(10, 10, 10, 0.5)), url("Images/employeems.jpeg");
+    background: url('http://localhost:3000/Images/employeems.jpeg');
+    background: linear-gradient(rgba(11, 11, 11, 0.5), rgba(10, 10, 10, 0.5)), url("http://localhost:3000/Images/employeems.jpeg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -9,7 +9,67 @@
 .loginForm {
     background-color: rgba(1, 32, 93, 0.6);
     color: white;
+    width: 90%;
 }
+
+@media (min-width: 720px) {
+    .loginForm {
+        width: 50%;
+    }
+}
+
+@media (min-width: 720px) {
+    .tableReceipts {
+        width: 70%;
+        margin: auto;
+    }
+}
+
+@media (min-width: 720px) {
+    .formEditEmployee {
+        width: 70%!important;
+        margin: auto;
+    }
+}
+
+@media (min-width: 720px) {
+    .containerHome {
+       flex-wrap: nowrap!important;
+
+    }
+}
+
+.emplTableDetail{
+    font-size: 12px;
+    white-space: nowrap;
+    }
+
+@media (min-width: 720px) {
+    .emplTableDetail {
+        font-size: 16px;
+    }
+}
+
+.emplTable{
+font-size: 12px;
+    white-space: nowrap;
+}
+
+@media (min-width: 720px) {
+    .emplTable {
+        font-size: 16px;
+    }
+}
+
+.sticky-thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+       
+}
+
+
+
 
 ul li :hover {
     background-color: gray;
@@ -20,6 +80,12 @@ ul li :hover {
     max-height: 64px;
     border-radius: 25%;
 }
+
+.table-responsive {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
 
 /* .emp_det_image {
     max-width: 300px;

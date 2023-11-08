@@ -21,7 +21,7 @@ const EmployeeReceipts = () => {
     return date.toLocaleDateString("es-ES", options);
   }
 
-  const onButtonClick = (fileName) => {
+  /* const onButtonClick = (fileName) => {
     const pdfUrl = `http://localhost:3000/Recibos/` + fileName;
     const link = document.createElement("a");
     link.href = pdfUrl;
@@ -31,40 +31,60 @@ const EmployeeReceipts = () => {
     link.click();
     document.body.removeChild(link);
     console.log(fileName);
+  }; */
+  const onButtonClick = (fileName) => {
+    const pdfUrl = `http://localhost:3000/Recibos/` + fileName;
+
+    // Mostrar un diálogo de confirmación
+    const userConfirmed = window.confirm("¿Desea descargar este recibo?");
+
+    if (userConfirmed) {
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = fileName;
+      link.target = "_blank";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      console.log(fileName);
+    }
   };
 
+
   return (
-    <div className="container max-width-75 bg-dark pb-3 rounded-3">
-      <div className="pt-2 d-flex justify-content-center text-white">
+    <div className="container vh-100 max-width-75 bg-dark pb-3 ">
+      <div className="pt-2 text-center text-white">
         <h4>Recibos de sueldo</h4>
       </div>
-      <table className="table table-bordered table-striped table-hover table-responsive justify-content-center flex-column align-items-center mt-3">
-        <thead className="text-center">
-          <tr>
-            <th>ID</th>
-            <th>Fecha</th>
-            <th>Nom_Archivo</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody className="text-center">
-          {receipts.map((receipt) => (
-            <tr key={receipt.id}>
-              <td>{receipt.id}</td>
-              <td>{formatUploadDate(receipt.upload_date)}</td>
-              <td>{receipt.file_name}</td>
-              <td>
-                <Link
-                  className="btn btn-primary"
-                  onClick={() => onButtonClick(receipt.file_name)}
-                >
-                  Descargar
-                </Link>
-              </td>
+      <div className="tableReceipts">
+        <table className="table table-bordered table-striped table-hover mt-3">
+          <thead className="text-center">
+            <tr>
+              {/* <th>ID</th> */}
+              <th>Fecha</th>
+              {/* <th>Nom_Archivo</th> */}
+              <th>Acción</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="text-center">
+            {receipts.map((receipt) => (
+              <tr key={receipt.id}>
+                {/* <td>{receipt.id}</td> */}
+                <td>{formatUploadDate(receipt.upload_date)}</td>
+                {/* <td>{receipt.file_name}</td> */}
+                <td>
+                  <Link
+                    className="btn btn-primary"
+                    onClick={() => onButtonClick(receipt.file_name)}
+                  >
+                    <i className="bi bi-cloud-download"> Descargar</i>
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

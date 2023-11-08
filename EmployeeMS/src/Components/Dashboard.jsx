@@ -59,9 +59,7 @@ export const Dashboard = () => {
                   className="nav-link px-0 aling-middle text-white"
                 >
                   <i className="fs-4 bi-people ms-2"></i>
-                  <span className="ms-2 d-none d-sm-inline">
-                    Personal
-                  </span>
+                  <span className="ms-2 d-none d-sm-inline">Personal</span>
                 </Link>
               </li>
               <li className="w-100">
