@@ -22,12 +22,12 @@ const AddCategory = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center h-75">
-      <div className="p-3 rounded w-25 border">
-        <h2>Añadir categoria</h2>
+    <div className="d-flex justify-content-center align-items-center mt-3">
+      <div className="p-3 rounded border addCatTable">
+        <h3 className="text-center">Añadir Categoria</h3>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="category">
+            <label htmlFor="category" className="mb-2">
               <strong>Categoria:</strong>
             </label>
             <input
@@ -39,7 +39,7 @@ const AddCategory = () => {
             />
           </div>
 
-          <button className="btn btn-success w-100 rounded-0 mb-2">
+          <button className="btn btn-success w-100 mb-2 btn-sm">
             Añadir categoria
           </button>
         </form>

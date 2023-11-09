@@ -95,8 +95,8 @@ const Employee = () => {
               <table className="table table-striped table-bordered table-hover table-sm table-primary shadow">
                 <thead className="text-center table-light sticky-thead">
                   <tr className="align-middle">
+                    <th>Foto</th>
                     <th>Nombre</th>
-                    <th>Imagen</th>
                     <th>Empresa</th>
                     <th>Categoria</th>
                     <th>Cuil</th>
@@ -111,9 +111,6 @@ const Employee = () => {
                   {filteredEmployees.map((e) => (
                     <tr key={e.id} className="text-center">
                       <td className="align-middle">
-                        {e.name} {e.last_name}
-                      </td>
-                      <td className="align-middle">
                         <img
                           src={`http://localhost:3000/Images/` + e.image}
                           alt={e.name}
@@ -121,6 +118,10 @@ const Employee = () => {
                           loading="lazy"
                         />
                       </td>
+                      <td className="align-middle">
+                        {e.name} {e.last_name}
+                      </td>
+
                       <td className="align-middle">{e.company_name}</td>
                       <td className="align-middle">{e.category_name}</td>
                       <td className="align-middle">{e.cuil}</td>
@@ -139,7 +140,7 @@ const Employee = () => {
                         <div className="d-md-flex justify-content-center gap-1">
                           <Link
                             to={`/dashboard/edit_employee/` + e.id}
-                            className="btn btn-info btn-sm shadow btn-sm"
+                            className="btn btn-primary btn-sm shadow btn-sm"
                           >
                             <i className="fs-4 bi bi-pencil"></i>
                           </Link>

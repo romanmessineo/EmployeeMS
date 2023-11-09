@@ -89,6 +89,43 @@
   }
 }
 
+.addEmpTable{
+  width: 95%;
+  font-size: 12px;
+}
+
+@media (min-width: 720px) {
+  .addEmpTable {
+    max-width: 75%;
+    font-size: 16px;
+  }
+}
+
+.addCompTable {
+  width: 95%;
+  font-size: 12px;
+}
+
+@media (min-width: 720px) {
+  .addCompTable {
+    max-width: 75%;
+    font-size: 16px;
+  }
+}
+
+.addCatTable {
+  width: 95%;
+  font-size: 12px;
+}
+
+@media (min-width: 720px) {
+  .addCatTable {
+    max-width: 75%;
+    font-size: 16px;
+  }
+}
+
+
 .sticky-thead {
   position: sticky;
   top: 0;

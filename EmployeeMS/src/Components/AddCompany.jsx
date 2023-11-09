@@ -28,7 +28,7 @@ const AddCompany = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
-      <div className="p-3 rounded w-50 border">
+      <div className="p-3 rounded border addCompTable">
         <h3 className="text-center">Añadir Empresa</h3>
         <form className="row g-1" onSubmit={handleSubmit}>
           <div className="col-12">
@@ -89,8 +89,10 @@ const AddCompany = () => {
             />
           </div>
 
-          <div className="col-12">
-            <button className="btn btn-primary w-100">Añadir Empresa</button>
+          <div className="col-12 mt-2">
+            <button className="btn btn-primary w-100 btn-sm">
+              Añadir Empresa
+            </button>
           </div>
         </form>
       </div>

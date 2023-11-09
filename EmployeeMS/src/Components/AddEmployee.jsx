@@ -72,7 +72,7 @@ const AddEmployee = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
-      <div className="p-3 rounded w-50 border">
+      <div className="p-3 rounded border addEmpTable">
         <h3 className="text-center">Añadir Empleado</h3>
         <form className="row g-1" onSubmit={handleSubmit}>
           <div className="col-12">
@@ -247,7 +247,7 @@ const AddEmployee = () => {
           </div>
 
           <div className="col-12">
-            <button type="submit" className="btn btn-primary w-100">
+            <button type="submit" className="btn btn-primary w-100 btn-sm">
               Añadir Empleado
             </button>
           </div>

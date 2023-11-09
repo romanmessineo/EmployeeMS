@@ -25,7 +25,7 @@ const Company = () => {
         <div className="d-flex justify-content-between align-items-center">
           <h3>Lista de Empresas</h3>
 
-          <Link to="/dashboard/add_company" className="btn btn-success">
+          <Link to="/dashboard/add_company" className="btn btn-success btn-sm">
             Añadir Empresa
           </Link>
         </div>
@@ -55,12 +55,16 @@ const Company = () => {
                       <td>{c.sector}</td>
 
                       <td>
-                        <Link to="" className="btn btn-info btn-sm me-2">
+                        <Link
+                          to=""
+                          className="btn btn-info btn-sm me-2"
+                          onClick={() => alert("no disponible")}
+                        >
                           Editar
                         </Link>
                         <button
                           className="btn btn-warning btn-sm"
-                          /* onClick={() => handleDelete(c.id)} */
+                          onClick={() => alert("no disponible")}
                         >
                           Borrar
                         </button>
