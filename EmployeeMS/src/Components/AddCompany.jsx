@@ -3,33 +3,27 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddCompany = () => {
-  const [name, setName] = useState("");
-  const [cuit, setCuit] = useState("");
-  const [address, setAddress] = useState("");
-  const [sector, setSector] = useState("");
+  const [companyData, setCompanyData] = useState();
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Crea un objeto con los valores
-    const companyData = {
-      name,
-      cuit,
-      address,
-      sector,
-    };
-    // Realiza la solicitud POST con los datos del objeto
     axios
       .post("http://localhost:3000/auth/add_company", companyData)
       .then((result) => {
         if (result.data.Status) {
           navigate("/dashboard/company");
         } else {
-          alert(JSON.stringify(result.data) || "Ocurrió un error desconocido");
+          alert(result.data.Error);
         }
       })
       .catch((err) => console.log(err));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCompanyData({ ...companyData, [name]: value });
   };
 
   return (
@@ -45,9 +39,9 @@ const AddCompany = () => {
               type="text"
               className="form-control rounded-0"
               id="inputName"
+              name="name"
               placeholder="Ingresa un Nombre"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={handleInputChange}
             />
           </div>
 
@@ -59,10 +53,10 @@ const AddCompany = () => {
               type="text"
               className="form-control rounded-0"
               id="inputCuit"
+              name="cuit"
               placeholder="Ingresa CUIT"
               autoComplete="off"
-              value={cuit}
-              onChange={(e) => setCuit(e.target.value)}
+              onChange={handleInputChange}
             />
           </div>
 
@@ -74,9 +68,9 @@ const AddCompany = () => {
               type="text"
               className="form-control rounded-0"
               id="inputAddress"
+              name="address"
               placeholder="calle 1234"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={handleInputChange}
             />
           </div>
 
@@ -88,17 +82,15 @@ const AddCompany = () => {
               type="text"
               className="form-control rounded-0"
               id="inputSector"
+              name="sector"
               placeholder="Ingresa Rubro"
               autoComplete="off"
-              value={sector}
-              onChange={(e) => setSector(e.target.value)}
+              onChange={handleInputChange}
             />
           </div>
 
           <div className="col-12">
-            <button type="submit" className="btn btn-primary w-100">
-              Añadir Empresa
-            </button>
+            <button className="btn btn-primary w-100">Añadir Empresa</button>
           </div>
         </form>
       </div>

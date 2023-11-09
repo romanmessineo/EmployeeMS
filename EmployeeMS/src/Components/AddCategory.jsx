@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 const AddCategory = () => {
   const [category, setCategory] = useState();
   const navigate = useNavigate();
+
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     axios

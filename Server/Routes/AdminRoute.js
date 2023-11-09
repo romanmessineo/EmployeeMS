@@ -1,13 +1,14 @@
 import express from "express";
 import con from "../utils/db.js";
 import jwt from "jsonwebtoken";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import multer from "multer";
 import path from "path";
 import { resourceLimits } from "worker_threads";
 
 const router = express.Router();
 
+//Admin Login
 router.post("/adminlogin", (req, res) => {
   const sql = "SELECT * from admin Where email = ? and password = ?";
   con.query(sql, [req.body.email, req.body.password], (err, result) => {
@@ -16,39 +17,58 @@ router.post("/adminlogin", (req, res) => {
       const email = result[0].email;
       const token = jwt.sign(
         { role: "admin", email: email, id: result[0].id },
-        "jwt_secret_key", { expiresIn: '1d' }
+        "jwt_secret_key",
+        { expiresIn: "1d" }
       );
-      res.cookie('token', token)
+      res.cookie("token", token);
       return res.json({ loginStatus: true });
     } else {
-      return res.json({ loginStatus: false, Error: "email o password incorrectos" });
+      return res.json({
+        loginStatus: false,
+        Error: "email o password incorrectos",
+      });
     }
   });
 });
 
-router.get('/category', (req, res) => {
+//lista las categorias
+router.get("/category", (req, res) => {
   const sql = "SELECT * FROM category";
   con.query(sql, (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" })
-    return res.json({ Status: true, Result: result })
-  })
-})
+    if (err) return res.json({ Status: false, Error: "query Error" });
+    return res.json({ Status: true, Result: result });
+  });
+});
 
-
-
-router.post('/add_category', (req, res) => {
-  const sql = "INSERT INTO category (`name`) VALUES (?)"
+//añade categorias
+router.post("/add_category", (req, res) => {
+  const sql = "INSERT INTO category (`name`) VALUES (?)";
   con.query(sql, [req.body.category], (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" })
-    return res.json({ Status: true })
-  })
-})
+    if (err) return res.json({ Status: false, Error: "query Error" });
+    return res.json({ Status: true });
+  });
+});
 
+//add company
+router.post("/add_company", (req, res) => {
+  const sql =
+    "INSERT INTO company (`name`, `cuit`, `address`, `sector`) VALUES (?, ?, ?, ?)";
+  con.query(
+    sql,
+    [req.body.name, req.body.cuit, req.body.address, req.body.sector],
+    (err, result) => {
+      if (err) {
+        return res.json({ Status: false, Error: "Error en la consulta SQL" });
+      }
+      return res.json({ Status: true });
+    }
+  );
+});
 
 // Configura el almacenamiento para imágenes
 const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './public/Images');
+    cb(null, "./public/Images");
   },
   filename: (req, file, cb) => {
     const id = req.params.id;
@@ -59,19 +79,22 @@ const imageStorage = multer.diskStorage({
 // Configura el almacenamiento para archivos PDF
 const pdfStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './public/Recibos');
+    cb(null, "./public/Recibos");
   },
   filename: (req, file, cb) => {
     const id = req.params.id;
-    cb(null, `receipt_id_${id}_${Date.now()}${path.extname(file.originalname)}`);
+    cb(
+      null,
+      `receipt_id_${id}_${Date.now()}${path.extname(file.originalname)}`
+    );
   },
 });
 
 const uploadImage = multer({ storage: imageStorage });
 const uploadPDF = multer({ storage: pdfStorage });
 
-
-router.post('/upload_receipt/:id', uploadPDF.single('receipt'), (req, res) => {
+//Subir recibos de sueldo
+router.post("/upload_receipt/:id", uploadPDF.single("receipt"), (req, res) => {
   const id = req.params.id;
   const receiptFileName = req.file.filename;
 
@@ -82,20 +105,23 @@ router.post('/upload_receipt/:id', uploadPDF.single('receipt'), (req, res) => {
 
   con.query(sql, [id, receiptFileName, currentDate], (err, result) => {
     if (err) {
-      return res.json({ Status: false, Error: "Error al cargar el recibo de sueldo" });
+      return res.json({
+        Status: false,
+        Error: "Error al cargar el recibo de sueldo",
+      });
     } else {
       return res.json({ Status: true });
     }
   });
 });
 
-
-router.post('/add_employee', uploadImage.single('image'), (req, res) => {
+// add empleado
+router.post("/add_employee", uploadImage.single("image"), (req, res) => {
   const sql = `INSERT INTO employee 
-  (name, last_name, cuil, email, password, address, salary, image, category_id) 
+  (name, last_name, cuil, email, password, address, salary, image, category_id, company_id) 
   VALUES(?)`;
   bcrypt.hash(req.body.password, 10, (err, hash) => {
-    if (err) return res.json({ Status: false, Error: "query Error" })
+    if (err) return res.json({ Status: false, Error: "query Error" });
     const values = [
       req.body.name,
       req.body.last_name,
@@ -105,40 +131,24 @@ router.post('/add_employee', uploadImage.single('image'), (req, res) => {
       req.body.address,
       req.body.salary,
       req.file.filename,
-      req.body.category_id
-    ]
+      req.body.category_id,
+      req.body.company_id,
+    ];
     con.query(sql, [values], (err, result) => {
-      if (err) return res.json({ Status: false, Error: err })
-      return res.json({ Status: true })
-    })
-
-  })
-})
-
-router.post('/add_company', (req, res) => {
-  const sql = `INSERT INTO company
-  (name, cuit, address, sector) VALUES(?)`;
-
-  const values = [
-    req.body.name,
-    req.body.cuit,
-    req.body.address,
-    req.body.sector,
-
-  ]
-  con.query(sql, [values], (err, result) => {
-    if (err)
-      if (err) return res.json({ Status: false, Error: err })
-    return res.json({ Status: true })
+      if (err) return res.json({ Status: false, Error: err });
+      return res.json({ Status: true });
+    });
   });
+});
 
-})
-
-router.get('/employee', (req, res) => {
+//tabla empleados
+router.get("/employee", (req, res) => {
   const sql = `
-    SELECT employee.*, category.name AS category_name
+    SELECT employee.*, category.name AS category_name, company.name AS company_name
     FROM employee
-    INNER JOIN category ON employee.category_id = category.id;
+    INNER JOIN category ON employee.category_id = category.id
+    LEFT JOIN company ON employee.company_id = company.id;
+
   `;
   con.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" });
@@ -146,90 +156,107 @@ router.get('/employee', (req, res) => {
   });
 });
 
-router.get('/company', (req, res) => {
+//tabla de empresas
+router.get("/company", (req, res) => {
   const sql = "SELECT * FROM company";
   con.query(sql, (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" })
-    return res.json({ Status: true, Result: result })
-  })
+    if (err) return res.json({ Status: false, Error: "query Error" });
+    return res.json({ Status: true, Result: result });
+  });
+});
 
-})
-
-router.get('/employee/:id', (req, res) => {
+//trae los datos para editar empleados
+router.get("/employee/:id", (req, res) => {
   const id = req.params.id;
   const sql = "SELECT * FROM employee WHERE id = ?";
   con.query(sql, [id], (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" })
-    return res.json({ Status: true, Result: result })
-  })
-})
+    if (err) return res.json({ Status: false, Error: "query Error" });
+    return res.json({ Status: true, Result: result });
+  });
+});
 
-router.put('/edit_employee/:id', (req, res) => {
+//edita empleados con los nuevos datos
+router.put("/edit_employee/:id", (req, res) => {
   const id = req.params.id;
-  const sql = `UPDATE employee set name= ?, last_name= ?, cuil= ?, email= ?, password= ?, salary = ?, address = ?, category_id = ? WHERE id = ?`
+  const sql = `UPDATE employee set name= ?, last_name= ?, cuil= ?, email= ?, password= ?, salary = ?, address = ?, category_id = ? WHERE id = ?`;
   bcrypt.hash(req.body.password, 10, (err, hash) => {
-    if (err) return res.json({ Status: false, Error: "query Error" })
-  const values = [
-    req.body.name,
-    req.body.last_name,
-    req.body.cuil,
-    req.body.email,
-    hash,
-    req.body.salary,
-    req.body.address,
-    req.body.category_id
-  ]
-  con.query(sql, [...values, id], (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" })
-    return res.json({ Status: true, Result: result })
-  })
-  })
-})
+    if (err) return res.json({ Status: false, Error: "query Error" });
+    const values = [
+      req.body.name,
+      req.body.last_name,
+      req.body.cuil,
+      req.body.email,
+      hash,
+      req.body.salary,
+      req.body.address,
+      req.body.category_id,
+    ];
+    con.query(sql, [...values, id], (err, result) => {
+      if (err) return res.json({ Status: false, Error: "query Error" });
+      return res.json({ Status: true, Result: result });
+    });
+  });
+});
 
-router.delete('/delete_employee/:id', (req, res) => {
+//Borror empleados
+router.delete("/delete_employee/:id", (req, res) => {
   const id = req.params.id;
-  const sql = "delete from employee where id = ?"
+  const sql = "delete from employee where id = ?";
   con.query(sql, [id], (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" + err })
-    return res.json({ Status: true, Result: result })
-  })
-})
+    if (err) return res.json({ Status: false, Error: "query Error" + err });
+    return res.json({ Status: true, Result: result });
+  });
+});
 
-router.get('/admin_count', (req, res) => {
+//Home conteo de administrados
+router.get("/admin_count", (req, res) => {
   const sql = "select count(id) as admin from admin";
   con.query(sql, (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" + err })
-    return res.json({ Status: true, Result: result })
-  })
-})
+    if (err) return res.json({ Status: false, Error: "query Error" + err });
+    return res.json({ Status: true, Result: result });
+  });
+});
 
-router.get('/employee_count', (req, res) => {
+//Home conteo de empleados
+router.get("/employee_count", (req, res) => {
   const sql = "select count(id) as employee from employee";
   con.query(sql, (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" + err })
-    return res.json({ Status: true, Result: result })
-  })
-})
+    if (err) return res.json({ Status: false, Error: "query Error" + err });
+    return res.json({ Status: true, Result: result });
+  });
+});
 
-router.get('/salary_count', (req, res) => {
+//Home conteo de empresas
+router.get("/company_count", (req, res) => {
+  const sql = "select count(id) as company from company";
+  con.query(sql, (err, result) => {
+    if (err) return res.json({ Status: false, Error: "query Error" + err });
+    return res.json({ Status: true, Result: result });
+  });
+});
+
+//Home conteo de salarios
+router.get("/salary_count", (req, res) => {
   const sql = "select sum(salary) as salaryOFEmp from employee";
   con.query(sql, (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" + err })
-    return res.json({ Status: true, Result: result })
-  })
-})
+    if (err) return res.json({ Status: false, Error: "query Error" + err });
+    return res.json({ Status: true, Result: result });
+  });
+});
 
-router.get('/admin_records', (req, res) => {
-  const sql = "select * from admin"
+//Home lista de administradores
+router.get("/admin_records", (req, res) => {
+  const sql = "select * from admin";
   con.query(sql, (err, result) => {
-    if (err) return res.json({ Status: false, Error: "Query Error" + err })
-    return res.json({ Status: true, Result: result })
-  })
-})
+    if (err) return res.json({ Status: false, Error: "Query Error" + err });
+    return res.json({ Status: true, Result: result });
+  });
+});
 
-router.get('/logout', (req, res) => {
-  res.clearCookie('token')
-  return res.json({ Status: true })
-})
+//Admin logout
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  return res.json({ Status: true });
+});
 
 export { router as adminRouter };

@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 const Home = () => {
   const [adminTotal, setAdminTotal] = useState(0);
   const [employeeTotal, setemployeeTotal] = useState(0);
+  const [companyTotal, setcompanyTotal] = useState(0);
   const [salaryTotal, setSalaryTotal] = useState(0);
   const [admins, setAdmins] = useState([]);
 
   useEffect(() => {
     adminCount();
     employeeCount();
+    companyCount();
     salaryCount();
     AdminRecords();
   }, []);
@@ -23,6 +25,7 @@ const Home = () => {
       }
     });
   };
+
   const adminCount = () => {
     axios.get("http://localhost:3000/auth/admin_count").then((result) => {
       if (result.data.Status) {
@@ -30,6 +33,15 @@ const Home = () => {
       }
     });
   };
+
+  const companyCount = () => {
+    axios.get("http://localhost:3000/auth/company_count").then((result) => {
+      if (result.data.Status) {
+        setcompanyTotal(result.data.Result[0].company);
+      }
+    });
+  };
+
   const employeeCount = () => {
     axios.get("http://localhost:3000/auth/employee_count").then((result) => {
       if (result.data.Status) {
@@ -57,6 +69,16 @@ const Home = () => {
           <div className="d-flex justify-content-between">
             <h5>Total:</h5>
             <h5>{adminTotal}</h5>
+          </div>
+        </div>
+        <div className="px-3 pt-2 pb-3 border shadow w-100 w-md-25 mb-3 ">
+          <div className="text-center pb-1">
+            <h4>Empresas</h4>
+          </div>
+          <hr />
+          <div className="d-flex justify-content-between">
+            <h5>Total:</h5>
+            <h5>{companyTotal}</h5>
           </div>
         </div>
         <div className="px-3 pt-2 pb-3 border shadow w-100 w-md-25 mb-3 ">

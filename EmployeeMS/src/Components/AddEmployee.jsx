@@ -6,15 +6,17 @@ const AddEmployee = () => {
   const [employee, setEmployee] = useState({
     name: "",
     last_name: "",
-    cuil:"",
+    cuil: "",
     email: "",
     password: "",
     salary: "",
     address: "",
     category_id: "",
+    company_id: "",
     image: "",
   });
   const [category, setCategory] = useState([]);
+  const [company, setCompany] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +25,17 @@ const AddEmployee = () => {
       .then((result) => {
         if (result.data.Status) {
           setCategory(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+    
+    axios
+      .get("http://localhost:3000/auth/company")
+      .then((result) => {
+        if (result.data.Status) {
+          setCompany(result.data.Result);
         } else {
           alert(result.data.Error);
         }
@@ -41,6 +54,7 @@ const AddEmployee = () => {
     formData.append("salary", employee.salary);
     formData.append("address", employee.address);
     formData.append("category_id", employee.category_id);
+    formData.append("company_id", employee.company_id);
     formData.append("image", employee.image);
 
     axios
@@ -182,7 +196,32 @@ const AddEmployee = () => {
                 setEmployee({ ...employee, category_id: e.target.value })
               }
             >
+              <option value="">Seleccione una categoría</option>
               {category.map((c) => {
+                return (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <div className="col-12">
+            <label htmlFor="company" className="form-label">
+              Empresa
+            </label>
+
+            <select
+              name="company"
+              id="company"
+              className="form-select"
+              onChange={(e) =>
+                setEmployee({ ...employee, company_id: e.target.value })
+              }
+            >
+              <option value="">Seleccione una empresa</option>
+              {company.map((c) => {
                 return (
                   <option key={c.id} value={c.id}>
                     {c.name}

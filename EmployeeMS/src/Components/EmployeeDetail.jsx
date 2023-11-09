@@ -30,41 +30,61 @@ const EmployeeDetail = () => {
 
   return (
     <div className="container bg-dark pb-3 vh-100">
-      <div className="pt-2 text-center text-light">
+      <div className="pt-2 pb-2 text-center text-light">
         <h4>Employee Management System</h4>
       </div>
       <div className="row">
-        <div className="col-12 col-md-2 d-flex justify-content-center align-items-center">
+        <div className="col-md-2 d-flex justify-content-center align-items-start ">
           {employee.image && (
             <img
               src={`http://localhost:3000/Images/` + employee.image}
-              className="img-thumbnail rounded-circle"
-              style={{ width: "100px", height: "100px" }}
+              className="img-thumbnail "
+              style={{ maxWidth: "100%", maxHeight: "100%" }}
             />
           )}
         </div>
 
-        <div className="col-12 col-md-10 table-responsive">
-          <table className="table table-bordered table-striped table-hover mt-3 emplTableDetail">
+        <div className="col-12 col-md-10 emplTableDetail">
+          <table className="table table-bordered table-striped table-hover  custom-table">
             <thead className="text-center">
               <tr>
-                <th>Nombre</th>
-                <th>Cuil</th>
-                <th>Dirección</th>
-                <th>Categoría</th>
+                <th style={{ width: "33%" }}>Nombre</th>
+                <th style={{ width: "33%" }}>Empresa</th>
+                <th style={{ width: "33%" }}>Categoría</th>
               </tr>
             </thead>
-            <tbody className="text-center ">
+            <tbody className="text-center">
               <tr>
                 <td>
                   {employee.name} {employee.last_name}
                 </td>
-                <td>{employee.cuil}</td>
-                <td>{employee.address}</td>
+                <td>{employee.company_name}</td>
                 <td>{employee.category_name}</td>
               </tr>
             </tbody>
           </table>
+
+          <table className="table table-bordered table-striped table-hover custom-table">
+            <thead className="text-center">
+              <tr>
+                <th style={{ width: "33%" }}>CUIL</th>
+                <th style={{ width: "33%" }}>Email</th>
+                <th style={{ width: "33%" }}>Dirección</th>
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              <tr>
+                <td>{employee.cuil}</td>
+                <td>{employee.email}</td>
+                <td>{employee.address}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="col-12 d-flex justify-content-between align-items-center mt-2">
+            {/* Otro contenido */}
+          </div>
+
           <div className="col-12 d-flex justify-content-between align-items-center mt-2">
             {/* <button className="btn btn-danger me-2">
             Alta Temprana

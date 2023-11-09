@@ -71,7 +71,7 @@ const Employee = () => {
       <div className="col vh-100">
         <div className="d-flex justify-content-between align-items-center">
           <h3>Lista de Personal</h3>
-          <Link to="/dashboard/add_employee" className="btn btn-success">
+          <Link to="/dashboard/add_employee" className="btn btn-success btn-sm">
             Añadir Personal
           </Link>
         </div>
@@ -87,8 +87,9 @@ const Employee = () => {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
+
             <div
-              className="table-responsive emplTable"
+              className="emplTable"
               style={{ overflowY: "auto", maxHeight: "80vh" }}
             >
               <table className="table table-striped table-bordered table-hover table-sm table-primary shadow">
@@ -96,10 +97,11 @@ const Employee = () => {
                   <tr className="align-middle">
                     <th>Nombre</th>
                     <th>Imagen</th>
-                    <th>Cuil</th>
-                    <th>Email</th>
-                    <th>Dirección</th>
+                    <th>Empresa</th>
                     <th>Categoria</th>
+                    <th>Cuil</th>
+                    <th>Dirección</th>
+                    <th>Email</th>
                     <th>Salario</th>
                     <th>Subir Rec</th>
                     <th>Acción</th>
@@ -119,10 +121,11 @@ const Employee = () => {
                           loading="lazy"
                         />
                       </td>
-                      <td className="align-middle">{e.cuil}</td>
-                      <td className="align-middle">{e.email}</td>
-                      <td className="align-middle">{e.address}</td>
+                      <td className="align-middle">{e.company_name}</td>
                       <td className="align-middle">{e.category_name}</td>
+                      <td className="align-middle">{e.cuil}</td>
+                      <td className="align-middle">{e.address}</td>
+                      <td className="align-middle">{e.email}</td>
                       <td className="align-middle">${e.salary}</td>
                       <td className="align-middle">
                         <button
@@ -136,7 +139,7 @@ const Employee = () => {
                         <div className="d-md-flex justify-content-center gap-1">
                           <Link
                             to={`/dashboard/edit_employee/` + e.id}
-                            className="btn btn-info btn-sm shadow"
+                            className="btn btn-info btn-sm shadow btn-sm"
                           >
                             <i className="fs-4 bi bi-pencil"></i>
                           </Link>
