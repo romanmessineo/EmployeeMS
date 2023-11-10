@@ -4,10 +4,11 @@ import { adminRouter } from "./Routes/AdminRoute.js";
 import { EmployeeRouter } from "./Routes/EmployeeRoute.js";
 import Jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import {PORT} from './config.js'
 
 const app = express();
 const jwtSecretKey = process.env.JWT_SECRET_KEY || 'your_default_secret_key';
-const port = process.env.PORT || 3000;
+//const port = process.env.PORT || 3000;
 
 app.use(cors({
     origin: ["http://localhost:5173"],
@@ -45,6 +46,6 @@ app.use((err, req, res, next) => {
     res.status(500).json({ Status: false, Error: 'Something went wrong!' });
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

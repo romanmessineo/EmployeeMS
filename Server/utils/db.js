@@ -1,12 +1,19 @@
 import mysql from 'mysql';
+import {
+    DB_HOST,
+    DB_USER,
+    DB_PASSWORD,
+    DB_NAME,
+    DB_PORT
+} from '../config.js'
 
 const pool = mysql.createPool({
     connectionLimit: 10, // Ajusta según sea necesario
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "employeems",
-    port: 3306,
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_NAME,
+    port: DB_PORT
 });
 
 pool.getConnection((err, connection) => {

@@ -198,15 +198,29 @@ router.put("/edit_employee/:id", (req, res) => {
   });
 });
 
-//Borror empleados
+// Borrar empleados
 router.delete("/delete_employee/:id", (req, res) => {
   const id = req.params.id;
-  const sql = "delete from employee where id = ?";
-  pool.query(sql, [id], (err, result) => {
-    if (err) return res.json({ Status: false, Error: "query Error" + err });
-    return res.json({ Status: true, Result: result });
+
+  // Primero, borra los recibos asociados al empleado
+  const deleteReceiptsQuery = "DELETE FROM receipts WHERE employee_id = ?";
+  pool.query(deleteReceiptsQuery, [id], (deleteErr, deleteResult) => {
+    if (deleteErr) {
+      return res.json({ Status: false, Error: "Error al borrar recibos: " + deleteErr });
+    }
+
+    // Después, borra al empleado
+    const deleteEmployeeQuery = "DELETE FROM employee WHERE id = ?";
+    pool.query(deleteEmployeeQuery, [id], (err, result) => {
+      if (err) {
+        return res.json({ Status: false, Error: "Error al borrar empleado: " + err });
+      }
+
+      return res.json({ Status: true, Result: result });
+    });
   });
 });
+
 
 //Home conteo de administrados
 router.get("/admin_count", (req, res) => {
