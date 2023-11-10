@@ -17,15 +17,16 @@ const EmployeeDetail = () => {
   }, [id]);
 
   const handleLogout = () => {
-    axios
-      .get("http://localhost:3000/employee/logout")
-      .then((result) => {
-        if (result.data.Status) {
-          localStorage.removeItem("valid");
-          anavigate("/");
-        }
-      })
-      .catch((err) => console.log(err));
+    axios.get("http://localhost:3000/employee/logout").then((result) => {
+      if (result.data.Status) {
+        localStorage.removeItem("valid");
+        localStorage.removeItem("role"); 
+        localStorage.removeItem("userId"); // Elimina el userId si es relevante
+        //window.location.reload();
+        // Puedes redirigir a la página de inicio o hacer lo que sea necesario
+        anavigate('/');
+      }
+    });
   };
 
   return (

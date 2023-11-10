@@ -1,17 +1,17 @@
 import express from "express";
-import con from "../utils/db.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import multer from "multer";
 import path from "path";
 import { resourceLimits } from "worker_threads";
+import pool from "../utils/db.js";
 
 const router = express.Router();
 
 //Admin Login
 router.post("/adminlogin", (req, res) => {
   const sql = "SELECT * from admin Where email = ? and password = ?";
-  con.query(sql, [req.body.email, req.body.password], (err, result) => {
+  pool.query(sql, [req.body.email, req.body.password], (err, result) => {
     if (err) return res.json({ loginStatus: false, Error: "query error" });
     if (result.length > 0) {
       const email = result[0].email;
@@ -34,7 +34,7 @@ router.post("/adminlogin", (req, res) => {
 //lista las categorias
 router.get("/category", (req, res) => {
   const sql = "SELECT * FROM category";
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" });
     return res.json({ Status: true, Result: result });
   });
@@ -43,7 +43,7 @@ router.get("/category", (req, res) => {
 //añade categorias
 router.post("/add_category", (req, res) => {
   const sql = "INSERT INTO category (`name`) VALUES (?)";
-  con.query(sql, [req.body.category], (err, result) => {
+  pool.query(sql, [req.body.category], (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" });
     return res.json({ Status: true });
   });
@@ -53,7 +53,7 @@ router.post("/add_category", (req, res) => {
 router.post("/add_company", (req, res) => {
   const sql =
     "INSERT INTO company (`name`, `cuit`, `address`, `sector`) VALUES (?, ?, ?, ?)";
-  con.query(
+  pool.query(
     sql,
     [req.body.name, req.body.cuit, req.body.address, req.body.sector],
     (err, result) => {
@@ -103,7 +103,7 @@ router.post("/upload_receipt/:id", uploadPDF.single("receipt"), (req, res) => {
 
   const sql = `INSERT INTO receipts (employee_id, file_name, upload_date) VALUES (?, ?, ?)`;
 
-  con.query(sql, [id, receiptFileName, currentDate], (err, result) => {
+  pool.query(sql, [id, receiptFileName, currentDate], (err, result) => {
     if (err) {
       return res.json({
         Status: false,
@@ -134,7 +134,7 @@ router.post("/add_employee", uploadImage.single("image"), (req, res) => {
       req.body.category_id,
       req.body.company_id,
     ];
-    con.query(sql, [values], (err, result) => {
+    pool.query(sql, [values], (err, result) => {
       if (err) return res.json({ Status: false, Error: err });
       return res.json({ Status: true });
     });
@@ -150,7 +150,7 @@ router.get("/employee", (req, res) => {
     LEFT JOIN company ON employee.company_id = company.id;
 
   `;
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" });
     return res.json({ Status: true, Result: result });
   });
@@ -159,7 +159,7 @@ router.get("/employee", (req, res) => {
 //tabla de empresas
 router.get("/company", (req, res) => {
   const sql = "SELECT * FROM company";
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" });
     return res.json({ Status: true, Result: result });
   });
@@ -169,7 +169,7 @@ router.get("/company", (req, res) => {
 router.get("/employee/:id", (req, res) => {
   const id = req.params.id;
   const sql = "SELECT * FROM employee WHERE id = ?";
-  con.query(sql, [id], (err, result) => {
+  pool.query(sql, [id], (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" });
     return res.json({ Status: true, Result: result });
   });
@@ -191,7 +191,7 @@ router.put("/edit_employee/:id", (req, res) => {
       req.body.address,
       req.body.category_id,
     ];
-    con.query(sql, [...values, id], (err, result) => {
+    pool.query(sql, [...values, id], (err, result) => {
       if (err) return res.json({ Status: false, Error: "query Error" });
       return res.json({ Status: true, Result: result });
     });
@@ -202,7 +202,7 @@ router.put("/edit_employee/:id", (req, res) => {
 router.delete("/delete_employee/:id", (req, res) => {
   const id = req.params.id;
   const sql = "delete from employee where id = ?";
-  con.query(sql, [id], (err, result) => {
+  pool.query(sql, [id], (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" + err });
     return res.json({ Status: true, Result: result });
   });
@@ -211,7 +211,7 @@ router.delete("/delete_employee/:id", (req, res) => {
 //Home conteo de administrados
 router.get("/admin_count", (req, res) => {
   const sql = "select count(id) as admin from admin";
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" + err });
     return res.json({ Status: true, Result: result });
   });
@@ -220,7 +220,7 @@ router.get("/admin_count", (req, res) => {
 //Home conteo de empleados
 router.get("/employee_count", (req, res) => {
   const sql = "select count(id) as employee from employee";
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" + err });
     return res.json({ Status: true, Result: result });
   });
@@ -229,7 +229,7 @@ router.get("/employee_count", (req, res) => {
 //Home conteo de empresas
 router.get("/company_count", (req, res) => {
   const sql = "select count(id) as company from company";
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" + err });
     return res.json({ Status: true, Result: result });
   });
@@ -238,7 +238,7 @@ router.get("/company_count", (req, res) => {
 //Home conteo de salarios
 router.get("/salary_count", (req, res) => {
   const sql = "select sum(salary) as salaryOFEmp from employee";
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "query Error" + err });
     return res.json({ Status: true, Result: result });
   });
@@ -247,7 +247,7 @@ router.get("/salary_count", (req, res) => {
 //Home lista de administradores
 router.get("/admin_records", (req, res) => {
   const sql = "select * from admin";
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "Query Error" + err });
     return res.json({ Status: true, Result: result });
   });

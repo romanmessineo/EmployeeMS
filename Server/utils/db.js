@@ -1,22 +1,24 @@
-import mysql from 'mysql'
+import mysql from 'mysql';
 
-const con = mysql.createConnection({
+const pool = mysql.createPool({
+    connectionLimit: 10, // Ajusta según sea necesario
     host: "localhost",
     user: "root",
     password: "",
-    database: "employeems"
-})
+    database: "employeems",
+    port: 3306,
+});
 
-con.connect(function (err) {
+pool.getConnection((err, connection) => {
     if (err) {
-        console.log("Error de conexión")
+        console.error("Error de conexión a la base de datos:", err.message);
     } else {
-        console.log("Conectado")
+        console.log("Conectado a la base de datos");
+        connection.release(); // Libera la conexión para que pueda ser utilizada por otros
     }
-})
+});
 
-export default con;
-
+export default pool;
 
 
 

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './style.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -12,20 +13,30 @@ const Login = () => {
   const navigate = useNavigate()
   axios.defaults.withCredentials = true;
   
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("valid") === "true";
+
+    if (isAuthenticated) {
+      // Si ya está autenticado, redirigir directamente a /dashboard
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+
   const handleSubmit = (event) => {
-    event.preventDefault()
-    axios.post('http://localhost:3000/auth/adminlogin', values)
-      .then(result => {
+    event.preventDefault();
+    axios
+      .post("http://localhost:3000/auth/adminlogin", values)
+      .then((result) => {
         if (result.data.loginStatus) {
-          localStorage.setItem("valid", true)
-          navigate('/dashboard')
-          
+          localStorage.setItem("valid", true);
+          localStorage.setItem("role", "admin");
+          navigate("/dashboard");
         } else {
-          setError(result.data.Error)
+          setError(result.data.Error);
         }
       })
-      .catch(err => console.log(err))
-  }
+      .catch((err) => console.log(err));
+  };
 
     return (
       <div className="d-flex justify-content-center align-items-center vh-100 loginPage">

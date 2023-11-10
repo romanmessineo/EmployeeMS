@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./style.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -12,20 +12,32 @@ const EmployeeLogin = () => {
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    axios
-      .post("http://localhost:3000/employee/employee_login", values)
-      .then((result) => {
-        if (result.data.loginStatus) {
-          localStorage.setItem("valid", true);
-          navigate("/employee_detail/" + result.data.id);
-        } else {
-          setError(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("valid") === "true";
+
+    if (isAuthenticated) {
+      // Si ya está autenticado, redirigir directamente a /employee_detail/:id
+      const userId = localStorage.getItem("userId");
+      navigate(`/employee_detail/${userId}`);
+    }
+  }, [navigate]);
+
+ const handleSubmit = (event) => {
+  event.preventDefault();
+  axios
+    .post("http://localhost:3000/employee/employee_login", values)
+    .then((result) => {
+      if (result.data.loginStatus) {
+        localStorage.setItem("valid", true);
+        localStorage.setItem("role", "employee");
+        localStorage.setItem("userId", result.data.id);
+        navigate(`/employee_detail/${result.data.id}`);
+      } else {
+        setError(result.data.Error);
+      }
+    })
+    .catch((err) => console.log(err));
+};
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 loginPage">
