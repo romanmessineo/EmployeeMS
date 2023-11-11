@@ -1,8 +1,5 @@
-// Importar dotenv de manera condicional
-if (process.env.NODE_ENV !== 'production') {
-    const dotenv = await import('dotenv');
-    dotenv.config();
-}
+import dotenv from 'dotenv';
+dotenv.config();
 import mysql from 'mysql';
 
 import {
@@ -32,12 +29,3 @@ pool.getConnection((err, connection) => {
 });
 
 export default pool;
-
-
-
-
-
-
-
-
-

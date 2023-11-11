@@ -1,8 +1,7 @@
-// Importar dotenv de manera condicional
-if (process.env.NODE_ENV !== 'production') {
-    const dotenv = await import('dotenv');
-    dotenv.config();
-}
+import dotenv from 'dotenv';
+dotenv.config();
+
+
 import express from "express";
 import cors from 'cors';
 import { adminRouter } from "./Routes/AdminRoute.js";
@@ -12,15 +11,13 @@ import cookieParser from "cookie-parser";
 import {
     SERVER_PORT,
     JWT_SECRET_KEY,
+    CORS_ORIGIN,
 } from './config.js';
-
-
-
 
 const app = express();
 
 app.use(cors({
-    origin: ["http://localhost:5173"],
+    origin: [CORS_ORIGIN],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
