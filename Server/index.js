@@ -22,6 +22,7 @@ app.use('/auth', adminRouter);
 app.use('/employee', EmployeeRouter);
 app.use(express.static('Public'));
 
+
 const verifyUser = (req, res, next) => {
     const token = req.cookies.token;
     if (token) {

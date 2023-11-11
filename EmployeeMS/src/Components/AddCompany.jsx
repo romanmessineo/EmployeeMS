@@ -42,6 +42,7 @@ const AddCompany = () => {
               name="name"
               placeholder="Ingresa un Nombre"
               onChange={handleInputChange}
+              required= "campo obligatorio"
             />
           </div>
 
@@ -57,6 +58,7 @@ const AddCompany = () => {
               placeholder="Ingresa CUIT"
               autoComplete="off"
               onChange={handleInputChange}
+              required= "campo obligatorio"
             />
           </div>
 
@@ -71,6 +73,7 @@ const AddCompany = () => {
               name="address"
               placeholder="calle 1234"
               onChange={handleInputChange}
+              required= "campo obligatorio"
             />
           </div>
 
@@ -86,6 +89,7 @@ const AddCompany = () => {
               placeholder="Ingresa Rubro"
               autoComplete="off"
               onChange={handleInputChange}
+              required= "campo obligatorio"
             />
           </div>
 

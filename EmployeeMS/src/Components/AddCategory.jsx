@@ -35,6 +35,7 @@ const AddCategory = () => {
               name="category"
               placeholder="Ingresa una categoria"
               onChange={(e) => setCategory(e.target.value)}
+              required="campo obligatorio"
               className="form-control rounded-0"
             />
           </div>

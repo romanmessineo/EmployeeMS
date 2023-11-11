@@ -51,11 +51,12 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
-                autoComplete="off"
+                autoComplete="email"
                 placeholder="Ingrese Email"
                 onChange={(e) =>
                   setValues({ ...values, email: e.target.value })
                 }
+                required="campo obligatorio"
                 className="form-control rounded-0"
               />
             </div>
@@ -70,6 +71,7 @@ const Login = () => {
                 onChange={(e) =>
                   setValues({ ...values, password: e.target.value })
                 }
+                required="campo obligatorio"
                 className="form-control rounded-0"
               />
             </div>

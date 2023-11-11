@@ -116,12 +116,19 @@ router.post("/upload_receipt/:id", uploadPDF.single("receipt"), (req, res) => {
 });
 
 // add empleado
+
 router.post("/add_employee", uploadImage.single("image"), (req, res) => {
   const sql = `INSERT INTO employee 
   (name, last_name, cuil, email, password, address, salary, image, category_id, company_id) 
   VALUES(?)`;
+
   bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) return res.json({ Status: false, Error: "query Error" });
+
+    // Check if req.file is defined, use req.file.filename, otherwise use defaultImagePath
+    const imageFileName = req.file ? req.file.filename : "/imagesNullpng.png";
+
+
     const values = [
       req.body.name,
       req.body.last_name,
@@ -130,16 +137,18 @@ router.post("/add_employee", uploadImage.single("image"), (req, res) => {
       hash,
       req.body.address,
       req.body.salary,
-      req.file.filename,
+      imageFileName,
       req.body.category_id,
       req.body.company_id,
     ];
+
     pool.query(sql, [values], (err, result) => {
       if (err) return res.json({ Status: false, Error: err });
       return res.json({ Status: true });
     });
   });
 });
+
 
 //tabla empleados
 router.get("/employee", (req, res) => {

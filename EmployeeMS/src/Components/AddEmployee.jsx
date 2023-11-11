@@ -30,7 +30,7 @@ const AddEmployee = () => {
         }
       })
       .catch((err) => console.log(err));
-    
+
     axios
       .get("http://localhost:3000/auth/company")
       .then((result) => {
@@ -45,6 +45,7 @@ const AddEmployee = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const defaultImagePath = "imagesNullpng.png"; // Solo el nombre del archivo
     const formData = new FormData();
     formData.append("name", employee.name);
     formData.append("last_name", employee.last_name);
@@ -55,7 +56,18 @@ const AddEmployee = () => {
     formData.append("address", employee.address);
     formData.append("category_id", employee.category_id);
     formData.append("company_id", employee.company_id);
-    formData.append("image", employee.image);
+
+    // Check if the user selected an image
+    if (
+      employee.image &&
+      employee.image !== null &&
+      employee.image !== undefined
+    ) {
+      formData.append("image", employee.image);
+    } else {
+      // If not, set the default image name
+      formData.append("image", defaultImagePath);
+    }
 
     axios
       .post("http://localhost:3000/auth/add_employee", formData)
@@ -65,7 +77,6 @@ const AddEmployee = () => {
         } else {
           alert(result.data.Error);
         }
-
       })
       .catch((err) => console.log(err));
   };
@@ -75,7 +86,7 @@ const AddEmployee = () => {
       <div className="p-3 rounded border addEmpTable">
         <h3 className="text-center">Añadir Empleado</h3>
         <form className="row g-1" onSubmit={handleSubmit}>
-          <div className="col-12">
+          <div className="col-12 ">
             <label htmlFor="imputName" className="form-label">
               Nombre
             </label>
@@ -87,10 +98,11 @@ const AddEmployee = () => {
               onChange={(e) =>
                 setEmployee({ ...employee, name: e.target.value })
               }
+              required="campo obligatorio"
             />
           </div>
 
-          <div className="col-12">
+          <div className="col-12 pt-3">
             <label htmlFor="imputLastName" className="form-label">
               Apellido
             </label>
@@ -102,10 +114,11 @@ const AddEmployee = () => {
               onChange={(e) =>
                 setEmployee({ ...employee, last_name: e.target.value })
               }
+              required="campo obligatorio"
             />
           </div>
 
-          <div className="col-12">
+          <div className="col-12 pt-3">
             <label htmlFor="imputCuil" className="form-label">
               CUIL
             </label>
@@ -117,10 +130,11 @@ const AddEmployee = () => {
               onChange={(e) =>
                 setEmployee({ ...employee, cuil: e.target.value })
               }
+              required="campo obligatorio"
             />
           </div>
 
-          <div className="col-12">
+          <div className="col-12 pt-3">
             <label htmlFor="imputEmail" className="form-label">
               Email
             </label>
@@ -133,10 +147,11 @@ const AddEmployee = () => {
               onChange={(e) =>
                 setEmployee({ ...employee, email: e.target.value })
               }
+              required="campo obligatorio"
             />
           </div>
 
-          <div className="col-12">
+          <div className="col-12 pt-3">
             <label htmlFor="imputPassword" className="form-label">
               Password
             </label>
@@ -148,10 +163,11 @@ const AddEmployee = () => {
               onChange={(e) =>
                 setEmployee({ ...employee, password: e.target.value })
               }
+              required="campo obligatorio"
             />
           </div>
 
-          <div className="col-12">
+          <div className="col-12 pt-3">
             <label htmlFor="imputSalary" className="form-label">
               Salario
             </label>
@@ -164,10 +180,11 @@ const AddEmployee = () => {
               onChange={(e) =>
                 setEmployee({ ...employee, salary: e.target.value })
               }
+              required="campo obligatorio"
             />
           </div>
 
-          <div className="col-12">
+          <div className="col-12 pt-3">
             <label htmlFor="imputAddress" className="form-label">
               Dirección
             </label>
@@ -180,10 +197,11 @@ const AddEmployee = () => {
               onChange={(e) =>
                 setEmployee({ ...employee, address: e.target.value })
               }
+              required="campo obligatorio"
             />
           </div>
 
-          <div className="col-12">
+          <div className="col-12 pt-3">
             <label htmlFor="category" className="form-label">
               Categoria
             </label>
@@ -195,6 +213,7 @@ const AddEmployee = () => {
               onChange={(e) =>
                 setEmployee({ ...employee, category_id: e.target.value })
               }
+              required="campo obligatorio"
             >
               <option value="">Seleccione una categoría</option>
               {category.map((c) => {
@@ -207,7 +226,7 @@ const AddEmployee = () => {
             </select>
           </div>
 
-          <div className="col-12">
+          <div className="col-12 pt-3">
             <label htmlFor="company" className="form-label">
               Empresa
             </label>
@@ -219,6 +238,7 @@ const AddEmployee = () => {
               onChange={(e) =>
                 setEmployee({ ...employee, company_id: e.target.value })
               }
+              required="campo obligatorio"
             >
               <option value="">Seleccione una empresa</option>
               {company.map((c) => {
@@ -231,9 +251,10 @@ const AddEmployee = () => {
             </select>
           </div>
 
-          <div className="col-12 mb-3">
-            <label className="form-label" htmlFor="imputGroupFile01">
-              Seleciona Imagen
+          <div className="col-12 mb-3 pt-3">
+            <label className="form-label d-flex" htmlFor="imputGroupFile01">
+              Seleciona Imagen{" "}
+              <span className="text-danger"> *no obligatorio</span>
             </label>
             <input
               type="file"
