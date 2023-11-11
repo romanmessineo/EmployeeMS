@@ -1,10 +1,16 @@
+// Importar dotenv de manera condicional
+if (process.env.NODE_ENV !== 'production') {
+    const dotenv = await import('dotenv');
+    dotenv.config();
+}
 import mysql from 'mysql';
+
 import {
     DB_HOST,
     DB_USER,
     DB_PASSWORD,
     DB_NAME,
-    DB_PORT
+    DB_PORT_NUMBER
 } from '../config.js'
 
 const pool = mysql.createPool({
@@ -13,7 +19,7 @@ const pool = mysql.createPool({
     user: DB_USER,
     password: DB_PASSWORD,
     database: DB_NAME,
-    port: DB_PORT
+    port: DB_PORT_NUMBER
 });
 
 pool.getConnection((err, connection) => {

@@ -1,8 +1,14 @@
-export const PORT = process.env.DB_PORT || '3000'
+// Importar dotenv de manera condicional
+if (process.env.NODE_ENV !== 'production') {
+    const dotenv = await import('dotenv');
+    dotenv.config();
+}
 
-export const DB_HOST = process.env.DB_HOST || 'localhost'
-export const DB_USER = process.env.DB_USER || 'root'
-export const DB_PASSWORD = process.env.DB_PASSWORD || ''
-export const DB_NAME = process.env.DB_NAME || 'employeems'
-export const DB_PORT = process.env.DB_PORT || '3306'
+export const SERVER_PORT = process.env.SERVER_PORT || '3000';
+export const DB_HOST = process.env.DB_HOST || 'localhost';
+export const DB_USER = process.env.DB_USER || 'root';
+export const DB_PASSWORD = process.env.DB_PASSWORD || '';
+export const DB_NAME = process.env.DB_NAME || 'employeems';
+export const DB_PORT_NUMBER = process.env.DB_PORT_NUMBER || '3306';
+export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'your_default_secret_key';
 
