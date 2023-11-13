@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import mysql from 'mysql';
+import mysql from 'mysql12';
 
 import {
     DB_HOST,
