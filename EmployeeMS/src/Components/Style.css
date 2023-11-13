@@ -1,7 +1,7 @@
 .loginPage {
-  background: url("http://localhost:3000/Images/employeems.jpeg");
+  background: url("https://employeems-server-production.up.railway.app/Images/employeems.jpeg");
   background: linear-gradient(rgba(11, 11, 11, 0.5), rgba(10, 10, 10, 0.5)),
-    url("http://localhost:3000/Images/employeems.jpeg");
+    url("https://employeems-server-production.up.railway.app/Images/employeems.jpeg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
