@@ -8,7 +8,7 @@ import {
     DB_PASSWORD,
     DB_NAME,
     DB_PORT_NUMBER
-} from '../config.js'
+} from './config.js'
 
 const pool = mysql.createPool({
     host: DB_HOST,

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import multer from "multer";
 import path from "path";
 import { resourceLimits } from "worker_threads";
-import pool from "./db.js";
+import pool from "../db.js";
 
 const router = express.Router();
 
