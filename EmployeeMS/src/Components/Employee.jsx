@@ -119,7 +119,10 @@ const Employee = () => {
                     <tr key={e.id} className="text-center">
                       <td className="align-middle">
                         <img
-                          src={`http://localhost:3000/Images/` + e.image}
+                          src={
+                            `https://employeems-server-production.up.railway.app/Images/` +
+                            e.image
+                          }
                           alt={e.name}
                           className="employee_image img-fluid"
                           loading="lazy"
