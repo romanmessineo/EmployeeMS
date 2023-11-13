@@ -10,7 +10,10 @@ const AddCompany = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3000/auth/add_company", companyData)
+      .post(
+        "https://employeems-server-production.up.railway.app/auth/add_company",
+        companyData
+      )
       .then((result) => {
         if (result.data.Status) {
           navigate("/dashboard/company");

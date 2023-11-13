@@ -7,7 +7,7 @@ const Company = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/company")
+      .get("https://employeems-server-production.up.railway.app/auth/company")
       .then((result) => {
         console.log(result); // Agrega esto para ver la respuesta en la consola
         if (result.data.Status) {

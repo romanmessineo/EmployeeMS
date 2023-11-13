@@ -5,12 +5,15 @@ import { useNavigate } from "react-router-dom";
 const AddCategory = () => {
   const [category, setCategory] = useState();
   const navigate = useNavigate();
-
+  //https://employeems-server-production.up.railway.app/
   
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3000/auth/add_category", { category })
+      .post(
+        "https://employeems-server-production.up.railway.app/auth/add_category",
+        { category }
+      )
       .then((result) => {
         if (result.data.Status) {
           navigate("/dashboard/category");

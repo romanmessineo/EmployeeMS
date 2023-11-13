@@ -8,15 +8,17 @@ export const Dashboard = () => {
   axios.defaults.withCredentials = true;
 
   const handleLogout = () => {
-    axios.get("http://localhost:3000/auth/logout").then((result) => {
-      if (result.data.Status) {
-        localStorage.removeItem("valid");
-        localStorage.removeItem("role"); // Elimina también el rol
-        localStorage.removeItem("userId"); // Elimina el userId si es relevante
-        // Puedes redirigir a la página de inicio o hacer lo que sea necesario
-        anavigate('/');
-      }
-    });
+    axios
+      .get("https://employeems-server-production.up.railway.app/auth/logout")
+      .then((result) => {
+        if (result.data.Status) {
+          localStorage.removeItem("valid");
+          localStorage.removeItem("role"); // Elimina también el rol
+          localStorage.removeItem("userId"); // Elimina el userId si es relevante
+          // Puedes redirigir a la página de inicio o hacer lo que sea necesario
+          anavigate("/");
+        }
+      });
   };
 
   return (

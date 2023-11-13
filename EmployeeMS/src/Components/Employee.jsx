@@ -8,7 +8,7 @@ const Employee = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/employee")
+      .get("https://employeems-server-production.up.railway.app/auth/employee")
       .then((result) => {
         if (result.data.Status) {
           setEmployee(result.data.Result);
@@ -21,7 +21,10 @@ const Employee = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete("http://localhost:3000/auth/delete_employee/" + id)
+      .delete(
+        "https://employeems-server-production.up.railway.app/auth/delete_employee/" +
+          id
+      )
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
@@ -43,9 +46,13 @@ const Employee = () => {
         formData.append("receipt", file);
 
         axios
-          .post(`http://localhost:3000/auth/upload_receipt/${id}`, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-          })
+          .post(
+            `https://employeems-server-production.up.railway.app/auth/upload_receipt/${id}`,
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          )
           .then((result) => {
             if (result.data.Status) {
               // Handle success

@@ -23,7 +23,7 @@ const EditEmployee = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/category")
+      .get("https://employeems-server-production.up.railway.app/auth/category")
       .then((result) => {
         if (result.data.Status) {
           setCategory(result.data.Result);
@@ -34,7 +34,10 @@ const EditEmployee = () => {
       .catch((err) => console.log(err));
 
     axios
-      .get("http://localhost:3000/auth/employee/" + id)
+      .get(
+        "https://employeems-server-production.up.railway.app/auth/employee/" +
+          id
+      )
       .then((result) => {
         const employeeData = result.data.Result[0];
 
@@ -57,7 +60,11 @@ const EditEmployee = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put("http://localhost:3000/auth/edit_employee/" + id, employee)
+      .put(
+        "https://employeems-server-production.up.railway.app/auth/edit_employee/" +
+          id,
+        employee
+      )
       .then((result) => {
         if (result.data.Status) {
           navigate("/dashboard/employee");

@@ -9,7 +9,10 @@ const EmployeeDetail = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/employee/detail/" + id)
+      .get(
+        "https://employeems-server-production.up.railway.app/employee/detail/" +
+          id
+      )
       .then((result) => {
         setEmployee(result.data[0]);
       })
@@ -17,16 +20,20 @@ const EmployeeDetail = () => {
   }, [id]);
 
   const handleLogout = () => {
-    axios.get("http://localhost:3000/employee/logout").then((result) => {
-      if (result.data.Status) {
-        localStorage.removeItem("valid");
-        localStorage.removeItem("role"); 
-        localStorage.removeItem("userId"); // Elimina el userId si es relevante
-        //window.location.reload();
-        // Puedes redirigir a la página de inicio o hacer lo que sea necesario
-        anavigate('/');
-      }
-    });
+    axios
+      .get(
+        "https://employeems-server-production.up.railway.app/employee/logout"
+      )
+      .then((result) => {
+        if (result.data.Status) {
+          localStorage.removeItem("valid");
+          localStorage.removeItem("role");
+          localStorage.removeItem("userId"); // Elimina el userId si es relevante
+          //window.location.reload();
+          // Puedes redirigir a la página de inicio o hacer lo que sea necesario
+          anavigate("/");
+        }
+      });
   };
 
   return (
@@ -38,7 +45,10 @@ const EmployeeDetail = () => {
         <div className="col-md-2 d-flex justify-content-center align-items-start ">
           {employee.image && (
             <img
-              src={`http://localhost:3000/Images/` + employee.image}
+              src={
+                `https://employeems-server-production.up.railway.app/Images/` +
+                employee.image
+              }
               className="img-thumbnail "
               style={{ maxWidth: "100%", maxHeight: "100%" }}
             />

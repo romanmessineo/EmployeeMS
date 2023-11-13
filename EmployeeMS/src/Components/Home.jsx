@@ -17,46 +17,66 @@ const Home = () => {
   }, []);
 
   const AdminRecords = () => {
-    axios.get("http://localhost:3000/auth/admin_records").then((result) => {
-      if (result.data.Status) {
-        setAdmins(result.data.Result);
-      } else {
-        alert(result.data.Error);
-      }
-    });
+    axios
+      .get(
+        "https://employeems-server-production.up.railway.app/auth/admin_records"
+      )
+      .then((result) => {
+        if (result.data.Status) {
+          setAdmins(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      });
   };
 
   const adminCount = () => {
-    axios.get("http://localhost:3000/auth/admin_count").then((result) => {
-      if (result.data.Status) {
-        setAdminTotal(result.data.Result[0].admin);
-      }
-    });
+    axios
+      .get(
+        "https://employeems-server-production.up.railway.app/auth/admin_count"
+      )
+      .then((result) => {
+        if (result.data.Status) {
+          setAdminTotal(result.data.Result[0].admin);
+        }
+      });
   };
 
   const companyCount = () => {
-    axios.get("http://localhost:3000/auth/company_count").then((result) => {
-      if (result.data.Status) {
-        setcompanyTotal(result.data.Result[0].company);
-      }
-    });
+    axios
+      .get(
+        "https://employeems-server-production.up.railway.app/auth/company_count"
+      )
+      .then((result) => {
+        if (result.data.Status) {
+          setcompanyTotal(result.data.Result[0].company);
+        }
+      });
   };
 
   const employeeCount = () => {
-    axios.get("http://localhost:3000/auth/employee_count").then((result) => {
-      if (result.data.Status) {
-        setemployeeTotal(result.data.Result[0].employee);
-      }
-    });
+    axios
+      .get(
+        "https://employeems-server-production.up.railway.app/auth/employee_count"
+      )
+      .then((result) => {
+        if (result.data.Status) {
+          setemployeeTotal(result.data.Result[0].employee);
+        }
+      });
   };
   const salaryCount = () => {
-    axios.get("http://localhost:3000/auth/salary_count").then((result) => {
-      if (result.data.Status) {
-        setSalaryTotal(result.data.Result[0].salaryOFEmp);
-      } else {
-        alert(result.data.Error);
-      }
-    });
+    axios
+      .get(
+        "https://employeems-server-production.up.railway.app/auth/salary_count"
+      )
+      .then((result) => {
+        if (result.data.Status) {
+          setSalaryTotal(result.data.Result[0].salaryOFEmp);
+        } else {
+          alert(result.data.Error);
+        }
+      });
   };
   return (
     <div>

@@ -8,7 +8,11 @@ const EmployeeReceipts = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/employee/detail/" + id + "/receipts")
+      .get(
+        "https://employeems-server-production.up.railway.app/employee/detail/" +
+          id +
+          "/receipts"
+      )
       .then((result) => {
         setReceipts(result.data);
       })
@@ -33,7 +37,8 @@ const EmployeeReceipts = () => {
     console.log(fileName);
   }; */
   const onButtonClick = (fileName) => {
-    const pdfUrl = `http://localhost:3000/Recibos/` + fileName;
+    const pdfUrl =
+      `https://employeems-server-production.up.railway.app/Recibos/` + fileName;
 
     // Mostrar un diálogo de confirmación
     const userConfirmed = window.confirm("¿Desea descargar este recibo?");

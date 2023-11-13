@@ -21,7 +21,7 @@ const AddEmployee = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/category")
+      .get("https://employeems-server-production.up.railway.app/auth/category")
       .then((result) => {
         if (result.data.Status) {
           setCategory(result.data.Result);
@@ -32,7 +32,7 @@ const AddEmployee = () => {
       .catch((err) => console.log(err));
 
     axios
-      .get("http://localhost:3000/auth/company")
+      .get("https://employeems-server-production.up.railway.app/auth/company")
       .then((result) => {
         if (result.data.Status) {
           setCompany(result.data.Result);
@@ -70,7 +70,10 @@ const AddEmployee = () => {
     }
 
     axios
-      .post("http://localhost:3000/auth/add_employee", formData)
+      .post(
+        "https://employeems-server-production.up.railway.app/auth/add_employee",
+        formData
+      )
       .then((result) => {
         if (result.data.Status) {
           navigate("/dashboard/employee");
