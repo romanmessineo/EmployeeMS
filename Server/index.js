@@ -47,6 +47,12 @@ app.get('/verify', verifyUser, (req, res) => {
     return res.json({ Status: true, role: req.role, id: req.id });
 });
 
+app.get('/ping'), (req, res) => {
+    const result = pool.query(`SELECT "Hola mundo!" as RESULT`);
+    console.log(result)
+    res.send('Welcome server')
+}
+
 // Manejo de errores global
 app.use((err, req, res, next) => {
     console.error(err.stack);
