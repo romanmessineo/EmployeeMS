@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Employee = () => {
   const [employee, setEmployee] = useState([]);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -27,7 +28,7 @@ const Employee = () => {
       )
       .then((result) => {
         if (result.data.Status) {
-          window.location.reload();
+          navigate("/dashboard/employee");
         } else {
           alert(result.data.Error);
         }

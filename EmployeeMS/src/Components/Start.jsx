@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "./Style.css"
 const Start = () => {
 const navigate = useNavigate();
 
