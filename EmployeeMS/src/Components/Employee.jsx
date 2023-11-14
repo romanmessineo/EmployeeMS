@@ -20,18 +20,31 @@ const Employee = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleDelete = (id) => {
-    axios.delete(`${VITE_URL}/auth/delete_employee/` + id).then((result) => {
-      if (result.data.Status) {
-        // Actualizar el estado local de los empleados excluyendo el empleado eliminado
-        setEmployee((prevEmployees) =>
-          prevEmployees.filter((employee) => employee.id !== id)
-        );
-      } else {
-        alert(result.data.Error);
-      }
-    });
-  };
+ const handleDelete = (id) => {
+   // Mostrar ventana de confirmación
+   const isConfirmed = window.confirm(
+     "¿Estás seguro de que quieres eliminar este empleado?"
+   );
+
+   // Verificar la respuesta del usuario
+   if (isConfirmed) {
+     axios.delete(`${VITE_URL}/auth/delete_employee/` + id).then((result) => {
+       if (result.data.Status) {
+         // Actualizar el estado local de los empleados excluyendo el empleado eliminado
+         setEmployee((prevEmployees) =>
+           prevEmployees.filter((employee) => employee.id !== id)
+         );
+       } else {
+         alert(result.data.Error);
+       }
+     });
+   } else {
+     // El usuario canceló la acción
+     // Puedes agregar un mensaje o realizar alguna acción adicional si es necesario
+     console.log("El usuario canceló la acción de eliminar el empleado");
+   }
+ };
+
 
 
   const handleUploadReceipt = (id) => {

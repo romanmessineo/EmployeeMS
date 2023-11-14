@@ -9,16 +9,25 @@ const AddCategory = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(`${VITE_URL}/auth/add_category`, { category })
-      .then((result) => {
-        if (result.data.Status) {
-          navigate("/dashboard/category");
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
+    const isConfirmed = window.confirm(
+      "¿Estás seguro de que deseas añadir la categoría?"
+    );
+    if (isConfirmed) {
+      axios
+        .post(`${VITE_URL}/auth/add_category`, { category })
+        .then((result) => {
+          if (result.data.Status) {
+            navigate("/dashboard/category");
+          } else {
+            alert(result.data.Error);
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      // El usuario canceló la acción
+      // Puedes agregar un mensaje o realizar alguna acción adicional si es necesario
+      console.log("El usuario canceló la acción");
+    }
   };
 
   return (

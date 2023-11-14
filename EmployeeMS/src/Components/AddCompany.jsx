@@ -10,22 +10,36 @@ const AddCompany = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(`${VITE_URL}/auth/add_company`, companyData)
-      .then((result) => {
-        if (result.data.Status) {
-          navigate("/dashboard/company");
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
+
+    // Mostrar ventana de confirmación
+    const isConfirmed = window.confirm(
+      "¿Estás seguro de que quieres añadir la empresa?"
+    );
+
+    // Verificar la respuesta del usuario
+    if (isConfirmed) {
+      axios
+        .post(`${VITE_URL}/auth/add_company`, companyData)
+        .then((result) => {
+          if (result.data.Status) {
+            navigate("/dashboard/company");
+          } else {
+            alert(result.data.Error);
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      // El usuario canceló la acción
+      // Puedes agregar un mensaje o realizar alguna acción adicional si es necesario
+      console.log("El usuario canceló la acción de añadir la empresa");
+    }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCompanyData({ ...companyData, [name]: value });
   };
+
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">

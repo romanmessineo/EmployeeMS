@@ -51,7 +51,7 @@ const Login = () => {
             <input
               type="email"
               name="email"
-              autoComplete="email"
+              autoComplete="on"
               placeholder="Ingrese Email"
               onChange={(e) => setValues({ ...values, email: e.target.value })}
               required="campo obligatorio"
@@ -65,6 +65,7 @@ const Login = () => {
             <input
               type="password"
               name="password"
+              autoComplete="on"
               placeholder="Ingrese Password"
               onChange={(e) =>
                 setValues({ ...values, password: e.target.value })

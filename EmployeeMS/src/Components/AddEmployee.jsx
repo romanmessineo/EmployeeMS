@@ -46,41 +46,55 @@ const AddEmployee = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const defaultImagePath = "imagesNullpng.png"; // Solo el nombre del archivo
-    const formData = new FormData();
-    formData.append("name", employee.name);
-    formData.append("last_name", employee.last_name);
-    formData.append("cuil", employee.cuil);
-    formData.append("email", employee.email);
-    formData.append("password", employee.password);
-    formData.append("salary", employee.salary);
-    formData.append("address", employee.address);
-    formData.append("category_id", employee.category_id);
-    formData.append("company_id", employee.company_id);
 
-    // Check if the user selected an image
-    if (
-      employee.image &&
-      employee.image !== null &&
-      employee.image !== undefined
-    ) {
-      formData.append("image", employee.image);
+    // Mostrar ventana de confirmación
+    const isConfirmed = window.confirm(
+      "¿Estás seguro de que quieres añadir el empleado?"
+    );
+
+    // Verificar la respuesta del usuario
+    if (isConfirmed) {
+      const defaultImagePath = "imagesNullpng.png"; // Solo el nombre del archivo
+      const formData = new FormData();
+      formData.append("name", employee.name);
+      formData.append("last_name", employee.last_name);
+      formData.append("cuil", employee.cuil);
+      formData.append("email", employee.email);
+      formData.append("password", employee.password);
+      formData.append("salary", employee.salary);
+      formData.append("address", employee.address);
+      formData.append("category_id", employee.category_id);
+      formData.append("company_id", employee.company_id);
+
+      // Check if the user selected an image
+      if (
+        employee.image &&
+        employee.image !== null &&
+        employee.image !== undefined
+      ) {
+        formData.append("image", employee.image);
+      } else {
+        // If not, set the default image name
+        formData.append("image", defaultImagePath);
+      }
+
+      axios
+        .post(`${VITE_URL}/auth/add_employee`, formData)
+        .then((result) => {
+          if (result.data.Status) {
+            navigate("/dashboard/employee");
+          } else {
+            alert(result.data.Error);
+          }
+        })
+        .catch((err) => console.log(err));
     } else {
-      // If not, set the default image name
-      formData.append("image", defaultImagePath);
+      // El usuario canceló la acción
+      // Puedes agregar un mensaje o realizar alguna acción adicional si es necesario
+      console.log("El usuario canceló la acción de añadir el empleado");
     }
-
-    axios
-      .post(`${VITE_URL}/auth/add_employee`, formData)
-      .then((result) => {
-        if (result.data.Status) {
-          navigate("/dashboard/employee");
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
   };
+
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
