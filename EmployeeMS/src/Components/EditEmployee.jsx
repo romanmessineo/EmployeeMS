@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { VITE_URL } from "./config";
 
 const EditEmployee = () => {
   const { id } = useParams();
@@ -16,14 +17,12 @@ const EditEmployee = () => {
     category_id: "",
   });
 
-  
-
   const [category, setCategory] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("https://employeems-server-production.up.railway.app/auth/category")
+      .get(`${VITE_URL}/auth/category`)
       .then((result) => {
         if (result.data.Status) {
           setCategory(result.data.Result);
@@ -34,10 +33,7 @@ const EditEmployee = () => {
       .catch((err) => console.log(err));
 
     axios
-      .get(
-        "https://employeems-server-production.up.railway.app/auth/employee/" +
-          id
-      )
+      .get(`${VITE_URL}/auth/employee/` + id)
       .then((result) => {
         const employeeData = result.data.Result[0];
 
@@ -56,15 +52,10 @@ const EditEmployee = () => {
       .catch((err) => console.log(err));
   }, []);
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(
-        "https://employeems-server-production.up.railway.app/auth/edit_employee/" +
-          id,
-        employee
-      )
+      .put(`${VITE_URL}/auth/edit_employee/` + id, employee)
       .then((result) => {
         if (result.data.Status) {
           navigate("/dashboard/employee");
@@ -85,7 +76,7 @@ const EditEmployee = () => {
           </div>
           {employee.image && (
             <img
-              src={`http://localhost:3000/Images/` + employee.image}
+              src={`${VITE_URL}/Images/` + employee.image}
               alt="Employee Image"
               className="img-thumbnail rounded-circle"
               style={{ width: "100px", height: "100px" }}

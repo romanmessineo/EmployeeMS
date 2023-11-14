@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./Style.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { VITE_URL } from "./config";
 
 const EmployeeLogin = () => {
   const [values, setValues] = useState({
@@ -22,25 +23,22 @@ const EmployeeLogin = () => {
     }
   }, [navigate]);
 
- const handleSubmit = (event) => {
-  event.preventDefault();
-  axios
-    .post(
-      "https://employeems-server-production.up.railway.app/employee/employee_login",
-      values
-    )
-    .then((result) => {
-      if (result.data.loginStatus) {
-        localStorage.setItem("valid", true);
-        localStorage.setItem("role", "employee");
-        localStorage.setItem("userId", result.data.id);
-        navigate(`/employee_detail/${result.data.id}`);
-      } else {
-        setError(result.data.Error);
-      }
-    })
-    .catch((err) => console.log(err));
-};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .post(`${VITE_URL}/employee/employee_login`, values)
+      .then((result) => {
+        if (result.data.loginStatus) {
+          localStorage.setItem("valid", true);
+          localStorage.setItem("role", "employee");
+          localStorage.setItem("userId", result.data.id);
+          navigate(`/employee_detail/${result.data.id}`);
+        } else {
+          setError(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 loginPage">

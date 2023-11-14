@@ -1,24 +1,22 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import "bootstrap-icons/font/bootstrap-icons.css"; 
-import axios from 'axios';
-
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import axios from "axios";
+import { VITE_URL } from "./config";
 
 export const Dashboard = () => {
-  const anavigate = useNavigate()
+  const anavigate = useNavigate();
   axios.defaults.withCredentials = true;
 
   const handleLogout = () => {
-    axios
-      .get("https://employeems-server-production.up.railway.app/auth/logout")
-      .then((result) => {
-        if (result.data.Status) {
-          localStorage.removeItem("valid");
-          localStorage.removeItem("role"); // Elimina también el rol
-          localStorage.removeItem("userId"); // Elimina el userId si es relevante
-          // Puedes redirigir a la página de inicio o hacer lo que sea necesario
-          anavigate("/");
-        }
-      });
+    axios.get(`${VITE_URL}/auth/logout`).then((result) => {
+      if (result.data.Status) {
+        localStorage.removeItem("valid");
+        localStorage.removeItem("role"); // Elimina también el rol
+        localStorage.removeItem("userId"); // Elimina el userId si es relevante
+        // Puedes redirigir a la página de inicio o hacer lo que sea necesario
+        anavigate("/");
+      }
+    });
   };
 
   return (
@@ -101,6 +99,6 @@ export const Dashboard = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Dashboard
+export default Dashboard;

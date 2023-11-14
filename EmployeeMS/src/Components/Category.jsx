@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { VITE_URL } from "./config";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
   useEffect(() => {
     axios
-      .get("https://employeems-server-production.up.railway.app/auth/category")
+      .get(`${VITE_URL}/auth/category`)
       .then((result) => {
         if (result.data.Status) {
           setCategory(result.data.Result);

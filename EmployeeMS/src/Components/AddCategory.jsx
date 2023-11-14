@@ -1,19 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { VITE_URL } from "./config";
 
 const AddCategory = () => {
   const [category, setCategory] = useState();
   const navigate = useNavigate();
-  //https://employeems-server-production.up.railway.app/
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(
-        "https://employeems-server-production.up.railway.app/auth/add_category",
-        { category }
-      )
+      .post(`${VITE_URL}/auth/add_category`, { category })
       .then((result) => {
         if (result.data.Status) {
           navigate("/dashboard/category");

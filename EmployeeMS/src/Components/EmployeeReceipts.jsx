@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { VITE_URL } from "./config";
 
 const EmployeeReceipts = () => {
   const [receipts, setReceipts] = useState([]);
@@ -8,11 +9,7 @@ const EmployeeReceipts = () => {
 
   useEffect(() => {
     axios
-      .get(
-        "https://employeems-server-production.up.railway.app/employee/detail/" +
-          id +
-          "/receipts"
-      )
+      .get(`${VITE_URL}/employee/detail/` + id + "/receipts")
       .then((result) => {
         setReceipts(result.data);
       })
@@ -37,8 +34,7 @@ const EmployeeReceipts = () => {
     console.log(fileName);
   }; */
   const onButtonClick = (fileName) => {
-    const pdfUrl =
-      `https://employeems-server-production.up.railway.app/Recibos/` + fileName;
+    const pdfUrl = `${VITE_URL}/Recibos/` + fileName;
 
     // Mostrar un diálogo de confirmación
     const userConfirmed = window.confirm("¿Desea descargar este recibo?");
@@ -54,7 +50,6 @@ const EmployeeReceipts = () => {
       console.log(fileName);
     }
   };
-
 
   return (
     <div className="container vh-100 max-width-75 bg-dark pb-3 ">

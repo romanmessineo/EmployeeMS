@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import { VITE_URL } from "./config";
 
 const EmployeeDetail = () => {
   const anavigate = useNavigate();
@@ -9,10 +10,7 @@ const EmployeeDetail = () => {
 
   useEffect(() => {
     axios
-      .get(
-        "https://employeems-server-production.up.railway.app/employee/detail/" +
-          id
-      )
+      .get(`${VITE_URL}/employee/detail/` + id)
       .then((result) => {
         setEmployee(result.data[0]);
       })
@@ -20,20 +18,16 @@ const EmployeeDetail = () => {
   }, [id]);
 
   const handleLogout = () => {
-    axios
-      .get(
-        "https://employeems-server-production.up.railway.app/employee/logout"
-      )
-      .then((result) => {
-        if (result.data.Status) {
-          localStorage.removeItem("valid");
-          localStorage.removeItem("role");
-          localStorage.removeItem("userId"); // Elimina el userId si es relevante
-          //window.location.reload();
-          // Puedes redirigir a la página de inicio o hacer lo que sea necesario
-          anavigate("/");
-        }
-      });
+    axios.get(`${VITE_URL}/employee/logout`).then((result) => {
+      if (result.data.Status) {
+        localStorage.removeItem("valid");
+        localStorage.removeItem("role");
+        localStorage.removeItem("userId"); // Elimina el userId si es relevante
+        //window.location.reload();
+        // Puedes redirigir a la página de inicio o hacer lo que sea necesario
+        anavigate("/");
+      }
+    });
   };
 
   return (
@@ -45,10 +39,7 @@ const EmployeeDetail = () => {
         <div className="col-md-2 d-flex justify-content-center align-items-start ">
           {employee.image && (
             <img
-              src={
-                `https://employeems-server-production.up.railway.app/Images/` +
-                employee.image
-              }
+              src={`${VITE_URL}/Images/` + employee.image}
               className="img-thumbnail "
               style={{ maxWidth: "100%", maxHeight: "100%" }}
             />

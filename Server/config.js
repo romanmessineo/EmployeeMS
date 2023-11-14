@@ -8,5 +8,8 @@ export const DB_PASSWORD = process.env.DB_PASSWORD || 'root123';
 export const DB_NAME = process.env.DB_NAME || 'employeems';
 export const DB_PORT_NUMBER = process.env.DB_PORT_NUMBER || '3306';
 export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'your_default_secret_key';
-export const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
 
+export const CORS_ORIGIN =
+    process.env.NODE_ENV === 'production'
+        ? process.env.CORS_ORIGIN_PROD || 'https://starlit-pegasus-83c65b.netlify.app'
+        : process.env.CORS_ORIGIN_DEV || 'http://localhost:5173';

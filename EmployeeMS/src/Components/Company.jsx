@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { VITE_URL } from "./config";
 
 const Company = () => {
   const [company, setCompany] = useState([]);
 
   useEffect(() => {
     axios
-      .get("https://employeems-server-production.up.railway.app/auth/company")
+      .get(`${VITE_URL}/auth/company`)
       .then((result) => {
         console.log(result); // Agrega esto para ver la respuesta en la consola
         if (result.data.Status) {

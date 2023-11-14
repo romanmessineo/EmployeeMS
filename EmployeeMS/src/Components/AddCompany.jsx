@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { VITE_URL } from "./config";
 
 const AddCompany = () => {
   const [companyData, setCompanyData] = useState();
@@ -10,10 +11,7 @@ const AddCompany = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(
-        "https://employeems-server-production.up.railway.app/auth/add_company",
-        companyData
-      )
+      .post(`${VITE_URL}/auth/add_company`, companyData)
       .then((result) => {
         if (result.data.Status) {
           navigate("/dashboard/company");

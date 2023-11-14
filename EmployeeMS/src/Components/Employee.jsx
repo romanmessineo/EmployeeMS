@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { VITE_URL } from "./config";
 
 const Employee = () => {
   const [employee, setEmployee] = useState([]);
   const [search, setSearch] = useState("");
-  const navigate = useNavigate();
-
+  
   useEffect(() => {
     axios
-      .get("https://employeems-server-production.up.railway.app/auth/employee")
+      .get(`${VITE_URL}/auth/employee`)
       .then((result) => {
         if (result.data.Status) {
           setEmployee(result.data.Result);
@@ -21,19 +21,18 @@ const Employee = () => {
   }, []);
 
   const handleDelete = (id) => {
-    axios
-      .delete(
-        "https://employeems-server-production.up.railway.app/auth/delete_employee/" +
-          id
-      )
-      .then((result) => {
-        if (result.data.Status) {
-          navigate("/dashboard/employee");
-        } else {
-          alert(result.data.Error);
-        }
-      });
+    axios.delete(`${VITE_URL}/auth/delete_employee/` + id).then((result) => {
+      if (result.data.Status) {
+        // Actualizar el estado local de los empleados excluyendo el empleado eliminado
+        setEmployee((prevEmployees) =>
+          prevEmployees.filter((employee) => employee.id !== id)
+        );
+      } else {
+        alert(result.data.Error);
+      }
+    });
   };
+
 
   const handleUploadReceipt = (id) => {
     const fileInput = document.createElement("input");
@@ -47,13 +46,9 @@ const Employee = () => {
         formData.append("receipt", file);
 
         axios
-          .post(
-            `https://employeems-server-production.up.railway.app/auth/upload_receipt/${id}`,
-            formData,
-            {
-              headers: { "Content-Type": "multipart/form-data" },
-            }
-          )
+          .post(`${VITE_URL}/auth/upload_receipt/${id}`, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          })
           .then((result) => {
             if (result.data.Status) {
               // Handle success
@@ -120,10 +115,7 @@ const Employee = () => {
                     <tr key={e.id} className="text-center">
                       <td className="align-middle">
                         <img
-                          src={
-                            `https://employeems-server-production.up.railway.app/Images/` +
-                            e.image
-                          }
+                          src={`${VITE_URL}/Images/` + e.image}
                           alt={e.name}
                           className="employee_image img-fluid"
                           loading="lazy"

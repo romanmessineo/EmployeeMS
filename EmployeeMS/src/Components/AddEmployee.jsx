@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { VITE_URL } from "./config";
 
 const AddEmployee = () => {
   const [employee, setEmployee] = useState({
@@ -21,7 +22,7 @@ const AddEmployee = () => {
 
   useEffect(() => {
     axios
-      .get("https://employeems-server-production.up.railway.app/auth/category")
+      .get(`${VITE_URL}/auth/category`)
       .then((result) => {
         if (result.data.Status) {
           setCategory(result.data.Result);
@@ -32,7 +33,7 @@ const AddEmployee = () => {
       .catch((err) => console.log(err));
 
     axios
-      .get("https://employeems-server-production.up.railway.app/auth/company")
+      .get(`${VITE_URL}/auth/company`)
       .then((result) => {
         if (result.data.Status) {
           setCompany(result.data.Result);
@@ -70,10 +71,7 @@ const AddEmployee = () => {
     }
 
     axios
-      .post(
-        "https://employeems-server-production.up.railway.app/auth/add_employee",
-        formData
-      )
+      .post(`${VITE_URL}/auth/add_employee`, formData)
       .then((result) => {
         if (result.data.Status) {
           navigate("/dashboard/employee");
