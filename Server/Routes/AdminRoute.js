@@ -66,7 +66,7 @@ router.post("/add_company", (req, res) => {
 });
 
 // Configura el almacenamiento para imágenes
-const imageStorage = multer.diskStorage({
+/* const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/Images");
   },
@@ -74,10 +74,10 @@ const imageStorage = multer.diskStorage({
     const id = req.params.id;
     cb(null, `id_${Date.now()}${path.extname(file.originalname)}`);
   },
-});
+}); */
 
 // Configura el almacenamiento para archivos PDF
-const pdfStorage = multer.diskStorage({
+/* const pdfStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/Recibos");
   },
@@ -91,7 +91,15 @@ const pdfStorage = multer.diskStorage({
 });
 
 const uploadImage = multer({ storage: imageStorage });
-const uploadPDF = multer({ storage: pdfStorage });
+const uploadPDF = multer({ storage: pdfStorage }); */
+
+const imageStorage = multer.memoryStorage();
+
+const pdfStorage = multer.memoryStorage();
+
+const uploadImage = multer({ storage: imageStorage }).single("image");
+const uploadPDF = multer({ storage: pdfStorage }).single("receipt");
+
 
 //Subir recibos de sueldo
 router.post("/upload_receipt/:id", uploadPDF.single("receipt"), (req, res) => {
