@@ -5,6 +5,8 @@ import multer from "multer";
 import path from "path";
 import { resourceLimits } from "worker_threads";
 import pool from "../db.js";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const router = express.Router();
 
@@ -66,9 +68,13 @@ router.post("/add_company", (req, res) => {
 });
 
 // Configura el almacenamiento para imágenes
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./public/Images");
+    const destinationPath = path.join(__dirname, '..', 'Public', 'Images');
+    cb(null, destinationPath);
   },
   filename: (req, file, cb) => {
     const id = req.params.id;
@@ -79,7 +85,8 @@ const imageStorage = multer.diskStorage({
 // Configura el almacenamiento para archivos PDF
 const pdfStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./public/Recibos");
+    const destinationPath = path.join(__dirname, '..', 'Public', 'Recibos');
+    cb(null, destinationPath);
   },
   filename: (req, file, cb) => {
     const id = req.params.id;
