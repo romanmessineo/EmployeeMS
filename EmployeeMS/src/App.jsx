@@ -2,7 +2,7 @@ import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./Components/Login";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./Components/Dashboard";
 import Home from "./Components/Home";
 import Employee from "./Components/Employee";
@@ -22,7 +22,7 @@ import AddCompany from "./Components/AddCompany";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Start />}></Route>
         <Route path="/adminlogin" element={<Login />}></Route>
@@ -68,7 +68,7 @@ function App() {
           ></Route>
         </Route>
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 

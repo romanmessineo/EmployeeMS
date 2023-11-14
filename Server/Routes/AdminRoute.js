@@ -93,6 +93,15 @@ const pdfStorage = multer.diskStorage({
 const uploadImage = multer({ storage: imageStorage });
 const uploadPDF = multer({ storage: pdfStorage });
 
+
+/* const imageStorage = multer.memoryStorage();
+
+const pdfStorage = multer.memoryStorage();
+
+const uploadImage = multer({ storage: imageStorage }).single("image");
+const uploadPDF = multer({ storage: pdfStorage }).single("receipt"); */
+
+
 //Subir recibos de sueldo
 router.post("/upload_receipt/:id", uploadPDF.single("receipt"), (req, res) => {
   const id = req.params.id;
